@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlaceIt — Student Placement Portal</title>
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+
+    /* ── NAV ── */
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background-color: #1c1c1c;
+      border-bottom: 1px solid #3d3d3d;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 800;
+      font-size: 23px;
+    }
+
+    .logo span {
+      color: #e8503a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      color: #888888;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .nav-links button:hover {
+      color: #f0f0f0;
+      background-color: #2e2e2e;
+    }
+
+    .nav-links button.active {
+      color: #f0f0f0;
+      background-color: #2e2e2e;
+    }
+
+
+    /* ── PAGE SHOW/HIDE ── */
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+
+    /* ── BUTTONS ── */
+
+    .btn {
+      display: inline-block;
+      padding: 11px 26px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      background-color: #e8503a;
+      color: #ffffff;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #e8503a;
+      border: 1.5px solid #e8503a;
+    }
+
+
+    /* ════════════════════════
+       PAGE 1 — HOME
+    ════════════════════════ */
+
+    .hero {
+      padding: 112px 40px 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background-color: rgba(232, 80, 58, 0.15);
+      border: 1px solid rgba(232, 80, 58, 0.4);
+      color: #f5a190;
+      font-size: 13px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 19px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #e8503a;
+    }
+
+    .hero p {
+      color: #888888;
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0 auto 35px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    /* Stats */
+
+    .stats-strip {
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid #3d3d3d;
+      border-bottom: 1px solid #3d3d3d;
+      background-color: #252525;
+    }
+
+    .stat-item {
+      flex: 1;
+      padding: 29px 32px;
+      text-align: center;
+      border-right: 1px solid #3d3d3d;
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 32px;
+      font-weight: 800;
+      color: #e8503a;
+    }
+
+    .stat-label {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    /* Features */
+
+    .section {
+      padding: 80px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #e8503a;
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: #888888;
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 19px;
+    }
+
+    .feature-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 14px;
+      padding: 29px;
+    }
+
+    .feature-card:hover {
+      border-color: #e8503a;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* ════════════════════════
+       PAGE 2 — PROFILE
+    ════════════════════════ */
+
+    #page-profile {
+      padding: 48px 40px;
+    }
+
+    .auth-wrap {
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background-color: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 29px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888888;
+    }
+
+    .auth-tab.active {
+      background-color: #e8503a;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .form-card h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .form-card .sub {
+      color: #888888;
+      font-size: 14px;
+      margin-bottom: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: #888888;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #e8503a;
+    }
+
+    .form-group select option {
+      background-color: #252525;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .form-card .btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      font-size: 16px;
+    }
+
+    /* Profile card (shown after login) */
+
+    .profile-card {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 19px;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #e8503a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 27px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .profile-info h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .profile-info p {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .profile-badge {
+      margin-left: auto;
+      background-color: rgba(0, 212, 170, 0.1);
+      border: 1px solid rgba(240, 230, 211, 0.3);
+      color: #f0e6d3;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .profile-stat {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 21px 24px;
+    }
+
+    .profile-stat .label {
+      color: #888888;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .profile-stat .value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 19px;
+      font-weight: 700;
+      color: #e8503a;
+    }
+
+    .logout-link {
+      display: block;
+      margin-top: 24px;
+      text-align: center;
+      color: #888888;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .logout-link:hover {
+      color: #e8503a;
+    }
+
+
+    /* ════════════════════════
+       PAGE 3 — JOB LISTINGS
+    ════════════════════════ */
+
+    #page-jobs {
+      padding: 48px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .jobs-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 29px;
+    }
+
+    .jobs-header h1 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 29px;
+      font-weight: 700;
+    }
+
+    .jobs-header p {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input,
+    .search-bar select {
+      background-color: #2e2e2e;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      padding: 10px 16px;
+      outline: none;
+    }
+
+    .search-bar input {
+      min-width: 200px;
+    }
+
+    .search-bar input:focus,
+    .search-bar select:focus {
+      border-color: #e8503a;
+    }
+
+    .search-bar select option {
+      background-color: #252525;
+    }
+
+    /* Filter tag pills */
+
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid #3d3d3d;
+      background-color: #2e2e2e;
+      color: #888888;
+    }
+
+    .tag:hover,
+    .tag.active {
+      background-color: #e8503a;
+      border-color: #e8503a;
+      color: #ffffff;
+    }
+
+    /* Job cards grid */
+
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 19px;
+    }
+
+    .job-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .job-card:hover {
+      border-color: #e8503a;
+    }
+
+    .job-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .company-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      flex-shrink: 0;
+    }
+
+    .job-card-top h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .company-name {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      background-color: #252525;
+      color: #888888;
+      border: 1px solid #3d3d3d;
+    }
+
+    .pill-purple {
+      background-color: rgba(232, 80, 58, 0.1);
+      color: #f5a190;
+      border-color: rgba(232, 80, 58, 0.25);
+    }
+
+    .job-desc {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .job-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .ctc {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 700;
+      color: #f0e6d3;
+      font-size: 16px;
+    }
+
+    .apply-btn {
+      padding: 8px 19px;
+      border-radius: 8px;
+      background-color: #e8503a;
+      color: #ffffff;
+      border: none;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .apply-btn:hover {
+      opacity: 0.85;
+    }
+
+    .apply-btn.applied {
+      background-color: rgba(240, 230, 211, 0.15);
+      color: #f0e6d3;
+      border: 1px solid rgba(240, 230, 211, 0.3);
+      cursor: default;
+    }
+
+    /* ── POPUP MESSAGE ── */
+    /* This is a small notification box that appears briefly at the bottom-right.
+       You may have heard this called a "toast" — same thing, just a different name! */
+
+    #popup {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #2e2e2e;
+      border: 1px solid #f0e6d3;
+      color: #f0e6d3;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      z-index: 999;
+    }
+
+    /* ── FOOTER ── */
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: #888888;
+      font-size: 13px;
+      border-top: 1px solid #3d3d3d;
+      margin-top: 64px;
+    }
+
+
+    /* ════════════════════════
+       RESPONSIVE — MOBILE
+       @media means "apply these styles only when screen width is 600px or less"
+    ════════════════════════ */
+
+    @media (max-width: 600px) {
+
+      /* Nav: stack logo and links vertically */
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 18px;
+        gap: 10px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .nav-links button {
+        font-size: 12px;
+        padding: 6px 8px;
+      }
+
+      /* Hero: shrink text so it fits on small screens */
+      .hero {
+        padding: 48px 18px 40px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      /* Stack the two hero buttons on top of each other */
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
+
+      /* Stats: 2 columns instead of 4 */
+      .stats-strip {
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        flex: 1 1 50%;  /* each item takes up 50% of the row = 2 per row */
+        border-right: none;
+        border-bottom: 1px solid #3d3d3d;
+      }
+
+      .stat-num {
+        font-size: 22px;
+      }
+
+      /* Features section padding */
+      .section {
+        padding: 40px 18px;
+      }
+
+      /* Profile page padding */
+      #page-profile {
+        padding: 24px 18px;
+      }
+
+      /* Register form: make the two-column rows single column */
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* Profile header: stack avatar and info vertically */
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+      }
+
+      .profile-badge {
+        margin-left: 0;
+      }
+
+      /* Jobs page padding */
+      #page-jobs {
+        padding: 24px 18px;
+      }
+
+      /* Jobs header: stack title and search bar vertically */
+      .jobs-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      /* Search bar: full width inputs */
+      .search-bar {
+        width: 100%;
+      }
+
+      .search-bar input,
+      .search-bar select {
+        width: 100%;
+        min-width: unset;
+      }
+
+      /* Job cards: single column */
+      .jobs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      /* Popup: full width at bottom */
+      #popup {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        text-align: center;
+      }
+
+    }
+
+    /* ── TABLET (601px to 900px) ── */
+    @media (min-width: 601px) and (max-width: 900px) {
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero {
+        padding: 64px 32px 48px;
+      }
+
+      .section {
+        padding: 48px 32px;
+      }
+
+      #page-profile,
+      #page-jobs {
+        padding: 32px 32px;
+      }
+
+      .jobs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Place<span>d</span></div>
+  <div class="nav-links">
+    <button onclick="showPage('home')" id="nav-home" class="active">Home</button>
+    <button onclick="showPage('profile')" id="nav-profile">My Profile</button>
+    <button onclick="showPage('jobs')" id="nav-jobs">Job Listings</button>
+  </div>
+</nav>
+
+
+<!-- ══ PAGE: HOME ══ -->
+<div id="page-home" class="page active">
+
+  <div class="hero">
+    <div class="hero-badge">🎓 Your Campus Placement Hub</div>
+    <h1>Land Your Dream Job <br><em>Before You Graduate</em></h1>
+    <p>Placed connects students with top companies looking for fresh talent. Browse openings, apply in minutes, track your status.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" onclick="showPage('jobs')">Browse Jobs →</button>
+      <button class="btn btn-outline" onclick="showPage('profile')">Create Profile</button>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-num">320+</div>
+      <div class="stat-label">Companies Hiring</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1,200+</div>
+      <div class="stat-label">Students Placed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">18 LPA</div>
+      <div class="stat-label">Highest Package</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6.4 LPA</div>
+      <div class="stat-label">Average Package</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What We Offer</div>
+    <h2>Everything you need to get placed</h2>
+    <p class="section-sub">From applications to offer letters, all in one place.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Smart Job Search</h3>
+        <p>Filter by role, CTC, location, and eligibility criteria tailored to your profile.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>One-Click Apply</h3>
+        <p>Apply to multiple companies instantly once your profile and resume are set up.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Application Tracking</h3>
+        <p>See where you stand — shortlisted, in-progress, or offer received, all at a glance.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3>Drive Alerts</h3>
+        <p>Get notified when a new placement drive is announced that matches your profile.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══ PAGE: PROFILE ══ -->
+<div id="page-profile" class="page">
+
+  <!-- Login / Register forms -->
+  <div id="auth-section">
+    <div class="auth-wrap">
+      <h2 style="font-family:'Courier New',Courier,monospace; font-size:26px; font-weight:700; margin-bottom:6px;">Welcome back 👋</h2>
+      <p style="color:#888888; margin-bottom:24px; font-size:14px;">Login or register to access your placement dashboard.</p>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchTab('login', this)">Login</div>
+        <div class="auth-tab" onclick="switchTab('register', this)">Register</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="form-login" class="auth-form active">
+        <div class="form-card">
+          <h2>Sign In</h2>
+          <p class="sub">Access your placement dashboard</p>
+          <div class="form-group">
+            <label>College Email</label>
+            <input type="email" id="login-email" placeholder="you@college.edu" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-pass" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-primary" onclick="handleLogin()">Sign In →</button>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="form-register" class="auth-form">
+        <div class="form-card">
+          <h2>Create Account</h2>
+          <p class="sub">Join PlaceIt to start applying</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="reg-fname" placeholder="Aarav" />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="reg-lname" placeholder="Shah" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>College Email</label>
+            <input type="email" id="reg-email" placeholder="you@college.edu" />
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <select id="reg-dept">
+              <option value="">Select department</option>
+              <option>Computer Science</option>
+              <option>Information Technology</option>
+              <option>Electronics & Comm.</option>
+              <option>Mechanical Engineering</option>
+              <option>Civil Engineering</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>CGPA</label>
+              <input type="number" id="reg-cgpa" placeholder="8.5" min="0" max="10" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Grad. Year</label>
+              <input type="number" id="reg-year" placeholder="2025" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-pass" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-primary" onclick="handleRegister()">Create Account →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Profile card shown after login -->
+  <div id="profile-section" class="profile-card">
+    <div class="profile-header">
+      <div class="avatar" id="avatar-initials">AS</div>
+      <div class="profile-info">
+        <h2 id="profile-name">Aarav Shah</h2>
+        <p id="profile-dept">Computer Science · 2025</p>
+        <p id="profile-email">you@college.edu</p>
+      </div>
+      <div class="profile-badge">✓ Eligible</div>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-stat">
+        <div class="label">CGPA</div>
+        <div class="value" id="profile-cgpa">8.5</div>
+      </div>
+      <div class="profile-stat">
+        <div class="label">Applications Sent</div>
+        <div class="value" id="profile-apps">0</div>
+      </div>
+      <div class="profile-stat">
+        <div class="label">Shortlisted</div>
+        <div class="value">—</div>
+      </div>
+      <div class="profile-stat">
+        <div class="label">Offers</div>
+        <div class="value">—</div>
+      </div>
+    </div>
+    <span class="logout-link" onclick="handleLogout()">Sign out</span>
+  </div>
+
+</div>
+
+
+<!-- ══ PAGE: JOB LISTINGS ══ -->
+<div id="page-jobs" class="page">
+
+  <div class="jobs-header">
+    <div>
+      <h1>Job Listings</h1>
+      <p>Open placement drives for your batch</p>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search role or company..." oninput="filterJobs()" />
+      <select id="filter-type" onchange="filterJobs()">
+        <option value="">All Types</option>
+        <option>Full-time</option>
+        <option>Internship</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="filter-tags">
+    <span class="tag active" onclick="setTag(this, '')">All</span>
+    <span class="tag" onclick="setTag(this, 'tech')">Tech</span>
+    <span class="tag" onclick="setTag(this, 'finance')">Finance</span>
+    <span class="tag" onclick="setTag(this, 'core')">Core</span>
+    <span class="tag" onclick="setTag(this, 'consulting')">Consulting</span>
+  </div>
+
+  <div class="jobs-grid" id="jobs-grid"></div>
+
+</div>
+
+
+<!-- Popup message (shown briefly when you apply) -->
+<div id="popup"></div>
+
+<footer>Placed · Student Placement Portal · Mini Project © 2025</footer>
+
+
+<script>
+// ─────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────
+
+  var jobs         = [];    // will be filled from the database
+  var appliedIds   = [];    // job IDs the logged-in student has applied to
+  var activeTag    = '';    // currently selected filter tag
+  var loggedInUser = null;  // logged-in student's info, null if nobody logged in
+
+
+  // ─────────────────────────────────────────────
+  // NAVIGATION
+  // ─────────────────────────────────────────────
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(function(page) {
+      page.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-links button').forEach(function(btn) {
+      btn.classList.remove('active');
+    });
+
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+
+    if (name === 'jobs') {
+      loadJobs(); // fetch from server instead of just rendering
+    }
+  }
+
+
+  // ─────────────────────────────────────────────
+  // LOAD JOBS — fetches from GET /jobs
+  // ─────────────────────────────────────────────
+
+  function loadJobs() {
+    fetch('http://localhost:3000/jobs')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        jobs = data;   // store the jobs from DB into our variable
+        renderJobs();  // now draw the cards
+      })
+      .catch(function(err) {
+        console.log('Could not load jobs:', err);
+        document.getElementById('jobs-grid').innerHTML =
+          '<p style="color:#888888; padding:32px 0;">Could not load jobs. Is the server running?</p>';
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // AUTH TABS
+  // ─────────────────────────────────────────────
+
+  function switchTab(tab, clickedEl) {
+    document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.auth-form').forEach(function(f) { f.classList.remove('active'); });
+    clickedEl.classList.add('active');
+    document.getElementById('form-' + tab).classList.add('active');
+  }
+
+
+  // ─────────────────────────────────────────────
+  // LOGIN — POST /login
+  // ─────────────────────────────────────────────
+
+  function handleLogin() {
+    var email    = document.getElementById('login-email').value.trim();
+    var password = document.getElementById('login-pass').value;
+
+    if (!email || !password) {
+      showPopup('Please fill in all fields.');
+      return;
+    }
+
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          loggedInUser = data.user;
+          loadAppliedJobs(); // fetch which jobs this student already applied to
+        } else {
+          showPopup(data.error);
+        }
+      })
+      .catch(function(err) {
+        console.log('Login error:', err);
+        showPopup('Could not connect to server.');
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // REGISTER — POST /register
+  // ─────────────────────────────────────────────
+
+  function handleRegister() {
+    var fname    = document.getElementById('reg-fname').value.trim();
+    var lname    = document.getElementById('reg-lname').value.trim();
+    var email    = document.getElementById('reg-email').value.trim();
+    var dept     = document.getElementById('reg-dept').value;
+    var cgpa     = document.getElementById('reg-cgpa').value;
+    var year     = document.getElementById('reg-year').value;
+    var password = document.getElementById('reg-pass').value;
+
+    if (!fname || !lname || !email || !dept || !cgpa || !year || !password) {
+      showPopup('Please fill in all fields.');
+      return;
+    }
+
+    fetch('http://localhost:3000/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:     fname + ' ' + lname,
+        email:    email,
+        password: password,
+        dept:     dept,
+        cgpa:     cgpa,
+        year:     year
+      })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          // After registering, immediately log them in
+          loggedInUser = {
+            id:    data.studentId,
+            name:  fname + ' ' + lname,
+            email: email,
+            dept:  dept,
+            cgpa:  cgpa,
+            year:  year
+          };
+          appliedIds = []; // fresh account, no applications yet
+          showProfile();
+        } else {
+          showPopup(data.error);
+        }
+      })
+      .catch(function(err) {
+        console.log('Register error:', err);
+        showPopup('Could not connect to server.');
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // LOAD APPLIED JOBS — GET /applications/:studentId
+  // Called after login so we know which jobs are already applied to
+  // ─────────────────────────────────────────────
+
+  function loadAppliedJobs() {
+    fetch('http://localhost:3000/applications/' + loggedInUser.id)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        // data is an array of job objects — we just need their IDs
+        appliedIds = data.map(function(job) { return job.id; });
+        showProfile();
+      })
+      .catch(function(err) {
+        console.log('Could not load applications:', err);
+        showProfile(); // show profile anyway even if this fails
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // SHOW PROFILE CARD
+  // ─────────────────────────────────────────────
+
+  function showProfile() {
+    document.getElementById('auth-section').style.display  = 'none';
+    document.getElementById('profile-section').style.display = 'block';
+
+    var words    = loggedInUser.name.split(' ');
+    var initials = words[0][0] + words[1][0];
+    document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+
+    document.getElementById('profile-name').textContent  = loggedInUser.name;
+    document.getElementById('profile-dept').textContent  = loggedInUser.dept + ' · ' + loggedInUser.year;
+    document.getElementById('profile-email').textContent = loggedInUser.email;
+    document.getElementById('profile-cgpa').textContent  = loggedInUser.cgpa;
+    document.getElementById('profile-apps').textContent  = appliedIds.length;
+  }
+
+
+  // ─────────────────────────────────────────────
+  // LOGOUT
+  // ─────────────────────────────────────────────
+
+  function handleLogout() {
+    loggedInUser = null;
+    appliedIds   = [];
+
+    document.getElementById('auth-section').style.display    = 'block';
+    document.getElementById('profile-section').style.display = 'none';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-pass').value  = '';
+  }
+
+
+  // ─────────────────────────────────────────────
+  // RENDER JOBS — builds cards from the jobs array
+  // ─────────────────────────────────────────────
+
+  function renderJobs() {
+    var searchText = document.getElementById('search-input').value.toLowerCase();
+    var typeFilter = document.getElementById('filter-type').value;
+
+    var filtered = jobs.filter(function(job) {
+      var matchesSearch = job.title.toLowerCase().includes(searchText) || job.company.toLowerCase().includes(searchText);
+      var matchesType   = (typeFilter === '') || (job.type === typeFilter);
+      var matchesTag    = (activeTag  === '') || (job.tag  === activeTag);
+      return matchesSearch && matchesType && matchesTag;
+    });
+
+    var grid = document.getElementById('jobs-grid');
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<p style="color:#888888; padding:32px 0;">No jobs match your filters.</p>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(job) {
+      var isApplied = appliedIds.includes(job.id);
+      var btnText   = isApplied ? '✓ Applied' : 'Apply Now';
+      var btnClass  = isApplied ? 'apply-btn applied' : 'apply-btn';
+
+      // note: DB columns are job.description and job.min_cgpa (not job.desc / job.cgpa)
+      return `
+        <div class="job-card">
+          <div class="job-card-top">
+            <div class="company-logo" style="background-color:#2a2a2a">🏢</div>
+            <div>
+              <h3>${job.title}</h3>
+              <div class="company-name">${job.company} · ${job.location}</div>
+            </div>
+          </div>
+          <div class="job-meta">
+            <span class="meta-pill pill-purple">${job.type}</span>
+            <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
+            <span class="meta-pill">${job.tag}</span>
+          </div>
+          <p class="job-desc">${job.description}</p>
+          <div class="job-card-bottom">
+            <span class="ctc">${job.ctc}</span>
+            <button class="${btnClass}" onclick="applyJob(${job.id}, this)">${btnText}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+
+  // ─────────────────────────────────────────────
+  // APPLY — POST /apply
+  // ─────────────────────────────────────────────
+
+  function applyJob(jobId, btn) {
+    if (appliedIds.includes(jobId)) return;
+
+    if (!loggedInUser) {
+      showPopup('Please log in first to apply!');
+      return;
+    }
+
+    fetch('http://localhost:3000/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId: loggedInUser.id, jobId: jobId })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          appliedIds.push(jobId);
+          btn.textContent = '✓ Applied';
+          btn.classList.add('applied');
+          document.getElementById('profile-apps').textContent = appliedIds.length;
+          var job = jobs.find(function(j) { return j.id === jobId; });
+          showPopup('Applied to ' + job.company + '! ✓');
+        } else {
+          showPopup(data.error);
+        }
+      })
+      .catch(function(err) {
+        console.log('Apply error:', err);
+        showPopup('Could not connect to server.');
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // FILTER & TAG
+  // ─────────────────────────────────────────────
+
+  function filterJobs() {
+    renderJobs();
+  }
+
+  function setTag(clickedTag, tagValue) {
+    activeTag = tagValue;
+    document.querySelectorAll('.tag').forEach(function(t) { t.classList.remove('active'); });
+    clickedTag.classList.add('active');
+    renderJobs();
+  }
+
+
+  // ─────────────────────────────────────────────
+  // POPUP
+  // ─────────────────────────────────────────────
+
+  function showPopup(message) {
+    var popup = document.getElementById('popup');
+    popup.textContent = message;
+    popup.style.display = 'block';
+    setTimeout(function() {
+      popup.style.display = 'none';
+    }, 2500);
+  }
+
+
+  // Load jobs on startup so they're ready when user navigates to the jobs page
+  loadJobs();
+  
+</script>
+</body>
+</html>
