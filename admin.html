@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlaceIt — Admin Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background-color: #1c1c1c;
+      border-bottom: 1px solid #3d3d3d;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { font-weight: 800; font-size: 23px; }
+    .logo span { color: #e8503a; }
+    .admin-badge {
+      background-color: rgba(232,80,58,0.15);
+      border: 1px solid rgba(232,80,58,0.4);
+      color: #f5a190;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .logout-btn {
+      background: none;
+      border: 1.5px solid #3d3d3d;
+      color: #888888;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .logout-btn:hover { border-color: #e8503a; color: #e8503a; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-block;
+      padding: 11px 26px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background-color: #e8503a; color: #fff; }
+    .btn-outline { background-color: transparent; color: #e8503a; border: 1.5px solid #e8503a; }
+    .btn-danger { background-color: transparent; color: #e8503a; border: 1.5px solid #e8503a; font-size: 13px; padding: 6px 14px; }
+    .btn-danger:hover { background-color: rgba(232,80,58,0.1); }
+    .btn-small { padding: 8px 16px; font-size: 13px; }
+    .btn-full { width: 100%; margin-top: 10px; padding: 14px; font-size: 16px; }
+
+    /* ── FORM ── */
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 14px; color: #888888; margin-bottom: 6px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #e8503a; }
+    .form-group select option { background-color: #252525; }
+    .form-group textarea { resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .error-msg { color: #e8503a; font-size: 13px; margin-top: 10px; display: none; }
+
+    /* ── DASHBOARD LAYOUT ── */
+    #page-dashboard {
+      padding: 40px;
+      display: none;
+    }
+
+    #page-dashboard.active {
+      display: block;
+    }
+    .dash-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid #3d3d3d;
+      padding-bottom: 0;
+    }
+
+    .dash-tab {
+      padding: 10px 20px;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888888;
+      border: 1px solid transparent;
+      border-bottom: none;
+      margin-bottom: -1px;
+    }
+
+    .dash-tab:hover { color: #f0f0f0; }
+    .dash-tab.active {
+      background-color: #2e2e2e;
+      color: #f0f0f0;
+      border-color: #3d3d3d;
+      border-bottom-color: #2e2e2e;
+    }
+
+    .dash-panel { display: none; }
+    .dash-panel.active { display: block; }
+
+    .panel-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .panel-sub {
+      color: #888888;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    /* ── JOB LIST ── */
+    .job-list-item {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .job-list-item:hover { border-color: #e8503a; }
+
+    .job-list-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .job-list-info p { color: #888888; font-size: 13px; }
+
+    .job-list-actions { display: flex; gap: 8px; align-items: center; }
+
+    .meta-pill {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      background-color: #252525;
+      color: #888888;
+      border: 1px solid #3d3d3d;
+    }
+
+    .pill-red {
+      background-color: rgba(232,80,58,0.1);
+      color: #f5a190;
+      border-color: rgba(232,80,58,0.25);
+    }
+
+    /* ── STUDENT TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: #888888;
+      font-weight: 600;
+      border-bottom: 1px solid #3d3d3d;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #252525;
+      vertical-align: top;
+    }
+
+    .data-table tr:hover td { background-color: #252525; }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* ── STUDENT DETAIL MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888888;
+    }
+    .modal-close:hover { color: #e8503a; }
+
+    .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .modal .sub { color: #888888; font-size: 13px; margin-bottom: 24px; }
+
+    .modal-section { margin-bottom: 20px; }
+    .modal-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #e8503a;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      background-color: rgba(232,80,58,0.1);
+      color: #f5a190;
+      border: 1px solid rgba(232,80,58,0.25);
+      margin: 3px;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background-color: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 10px;
+      padding: 14px 20px;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .stat-box .lbl { color: #888888; font-size: 12px; margin-bottom: 4px; }
+    .stat-box .val { font-size: 18px; font-weight: 700; color: #e8503a; }
+
+    /* ── APPLICANT SELECT ── */
+    .applicant-select {
+      width: 100%;
+      max-width: 360px;
+      padding: 10px 16px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 20px;
+    }
+    .applicant-select:focus { border-color: #e8503a; }
+
+    /* ── POPUP ── */
+    #popup {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #2e2e2e;
+      border: 1px solid #f0e6d3;
+      color: #f0e6d3;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      z-index: 999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: #888888;
+      font-size: 13px;
+      border-top: 1px solid #3d3d3d;
+      margin-top: 64px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div class="logo">Place<span>d</span></div>
+    <span class="admin-badge">Admin</span>
+  </div>
+  <div class="nav-right">
+    <span id="nav-admin-name" style="color:#888888; font-size:14px;"></span>
+    <button class="logout-btn" onclick="handleLogout()">Sign out</button>
+  </div>
+</nav>
+
+<!-- ══ PAGE: DASHBOARD ══ -->
+<div id="page-dashboard" class="page active">
+
+  <!-- Tabs -->
+  <div class="dash-tabs">
+    <div class="dash-tab active" onclick="switchTab('post')">📝 Post Job</div>
+    <div class="dash-tab" onclick="switchTab('manage')">📋 Manage Jobs</div>
+    <div class="dash-tab" onclick="switchTab('applicants')">👥 Applicants</div>
+    <div class="dash-tab" onclick="switchTab('students')">🎓 Students</div>
+    <div class="dash-tab" onclick="switchTab('companies')">🏢 Companies</div>
+  </div>
+
+  <!-- ── PANEL: POST JOB ── -->
+  <div id="panel-post" class="dash-panel active">
+    <div class="panel-title">Post a New Job</div>
+    <p class="panel-sub">Add a new placement opportunity for students.</p>
+    <div class="card" style="max-width:680px;">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" id="new-title" placeholder="e.g. Software Engineer" />
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" id="new-company" placeholder="e.g. Google" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="new-type">
+            <option>Full-time</option>
+            <option>Internship</option>
+            <option>Contract</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tag / Domain</label>
+          <select id="new-tag">
+            <option value="tech">Tech</option>
+            <option value="finance">Finance</option>
+            <option value="core">Core</option>
+            <option value="consulting">Consulting</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="new-location" placeholder="e.g. Bangalore" />
+        </div>
+        <div class="form-group">
+          <label>CTC / Stipend</label>
+          <input type="text" id="new-ctc" placeholder="e.g. 12 LPA" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Min CGPA</label>
+          <input type="number" id="new-cgpa" placeholder="7.0" min="0" max="10" step="0.1" />
+        </div>
+        <div class="form-group">
+          <label>Required Skills</label>
+          <input type="text" id="new-skills" placeholder="Python,SQL,ML (comma separated)" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Job Description</label>
+        <textarea id="new-desc" rows="4" placeholder="Describe the role..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="postJob()">Post Job →</button>
+    </div>
+  </div>
+
+  <!-- ── PANEL: MANAGE JOBS ── -->
+  <div id="panel-manage" class="dash-panel">
+    <div class="panel-title">Manage Jobs</div>
+    <p class="panel-sub">View and remove existing job listings.</p>
+    <div id="manage-jobs-list">
+      <p style="color:#888888;">Loading jobs...</p>
+    </div>
+  </div>
+
+  <!-- ── PANEL: APPLICANTS ── -->
+  <div id="panel-applicants" class="dash-panel">
+    <div class="panel-title">View Applicants</div>
+    <p class="panel-sub">See which students have applied for each role.</p>
+    <select class="applicant-select" id="job-select" onchange="loadApplicants()">
+      <option value="">Select a job...</option>
+    </select>
+    <div id="applicants-list"></div>
+  </div>
+
+  <!-- ── PANEL: STUDENTS ── -->
+  <div id="panel-students" class="dash-panel">
+    <div class="panel-title">Student Profiles</div>
+    <p class="panel-sub">Browse and view all registered students.</p>
+    <div id="students-list">
+      <p style="color:#888888;">Loading students...</p>
+    </div>
+  </div>
+
+  <!-- ── PANEL: COMPANIES ── -->
+  <div id="panel-companies" class="dash-panel">
+    <div class="panel-title">Manage Companies</div>
+    <p class="panel-sub">Register new companies and create their admin accounts.</p>
+
+    <div class="card" style="max-width:680px; margin-bottom:32px;">
+      <h3 style="font-size:16px; font-weight:700; margin-bottom:20px;">Register New Company</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" id="co-name" placeholder="e.g. Google" />
+        </div>
+        <div class="form-group">
+          <label>Industry</label>
+          <input type="text" id="co-industry" placeholder="e.g. Technology" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Website</label>
+          <input type="text" id="co-website" placeholder="https://company.com" />
+        </div>
+        <div class="form-group">
+          <label>Logo Emoji</label>
+          <input type="text" id="co-emoji" placeholder="🏢" maxlength="2" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="co-desc" rows="3" placeholder="Brief company description..."></textarea>
+      </div>
+      <div style="border-top:1px solid #3d3d3d; margin:20px 0; padding-top:20px;">
+        <h4 style="font-size:13px; color:#e8503a; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px;">Admin Account</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="co-username" placeholder="e.g. google_admin" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="text" id="co-password" placeholder="Set a password" />
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="registerCompany()">Register Company →</button>
+    </div>
+
+    <h3 style="font-size:16px; font-weight:700; margin-bottom:16px;">Registered Companies</h3>
+    <div id="companies-list"><p style="color:#888888;">Loading...</p></div>
+  </div>
+</div>
+
+<!-- Student Detail Modal -->
+<div class="modal-overlay" id="student-modal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal()">×</span>
+    <h2 id="modal-name">Student Name</h2>
+    <p class="sub" id="modal-sub">dept · year · email</p>
+    <div class="stat-row">
+      <div class="stat-box"><div class="lbl">CGPA</div><div class="val" id="modal-cgpa">—</div></div>
+      <div class="stat-box"><div class="lbl">Applications</div><div class="val" id="modal-apps">—</div></div>
+      <div class="stat-box"><div class="lbl">Skills</div><div class="val" id="modal-skills-count">—</div></div>
+    </div>
+    <div class="modal-section">
+      <h4>Bio</h4>
+      <p id="modal-bio" style="color:#888888; font-size:14px; line-height:1.7;">—</p>
+    </div>
+    <div class="modal-section">
+      <h4>Skills</h4>
+      <div id="modal-skills"></div>
+    </div>
+    <div class="modal-section">
+      <h4>Preferences</h4>
+      <div id="modal-prefs"></div>
+    </div>
+    <div class="modal-section">
+      <h4>Certifications</h4>
+      <div id="modal-certs"></div>
+    </div>
+  </div>
+</div>
+
+<div id="popup"></div>
+<footer>Placed · Admin Panel · © 2025</footer>
+
+<script>
+
+  // ─────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────
+
+  var isLoggedIn = false;
+  var allJobs    = [];
+
+
+  // ─────────────────────────────────────────────
+  // LOGIN
+  // ─────────────────────────────────────────────
+  // Check auth on page load
+  if (!localStorage.getItem('superAdmin')) {
+    window.location.href = '/admin-login.html';
+  }
+
+  // Show dashboard immediately
+  document.getElementById('nav-admin-name').textContent = 'Welcome, Admin';
+  loadAllJobs();
+  loadStudents();
+  loadCompanies();
+
+  function handleLogout() {
+    localStorage.removeItem('superAdmin');
+    window.location.href = '/admin-login.html';
+  }
+
+  // ─────────────────────────────────────────────
+  // TABS
+  // ─────────────────────────────────────────────
+
+  function switchTab(name) {
+    document.querySelectorAll('.dash-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.dash-panel').forEach(function(p) { p.classList.remove('active'); });
+    event.target.classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+
+  // ─────────────────────────────────────────────
+  // LOAD ALL JOBS
+  // ─────────────────────────────────────────────
+
+  function loadAllJobs() {
+    fetch('http://localhost:3000/jobs')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        allJobs = data;
+        renderManageJobs();
+        populateJobSelect();
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // MANAGE JOBS — render list with delete buttons
+  // ─────────────────────────────────────────────
+
+  function renderManageJobs() {
+    var list = document.getElementById('manage-jobs-list');
+    if (allJobs.length === 0) {
+      list.innerHTML = '<p style="color:#888888;">No jobs posted yet.</p>';
+      return;
+    }
+
+    list.innerHTML = allJobs.map(function(job) {
+      return `
+        <div class="job-list-item">
+          <div class="job-list-info">
+            <h3>${job.title}</h3>
+            <p>${job.company} · ${job.location} · ${job.type}</p>
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
+              <span class="meta-pill pill-red">${job.tag}</span>
+              <span class="meta-pill">${job.ctc}</span>
+            </div>
+          </div>
+          <div class="job-list-actions">
+            <button class="btn btn-danger" onclick="deleteJob(${job.id}, this)">🗑 Delete</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+
+  // ─────────────────────────────────────────────
+  // POST JOB
+  // ─────────────────────────────────────────────
+
+  function postJob() {
+    var title    = document.getElementById('new-title').value.trim();
+    var company  = document.getElementById('new-company').value.trim();
+    var type     = document.getElementById('new-type').value;
+    var tag      = document.getElementById('new-tag').value;
+    var location = document.getElementById('new-location').value.trim();
+    var ctc      = document.getElementById('new-ctc').value.trim();
+    var minCgpa  = document.getElementById('new-cgpa').value;
+    var skills   = document.getElementById('new-skills').value.trim();
+    var desc     = document.getElementById('new-desc').value.trim();
+
+    if (!title || !company || !location || !ctc || !minCgpa || !desc) {
+      showPopup('Please fill in all required fields.');
+      return;
+    }
+
+    fetch('http://localhost:3000/admin/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: title, company: company, type: type, tag: tag,
+        location: location, ctc: ctc, min_cgpa: minCgpa,
+        required_skills: skills, description: desc
+      })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          showPopup('Job posted successfully! ✓');
+          // Clear form
+          ['new-title','new-company','new-location','new-ctc','new-cgpa','new-skills','new-desc']
+            .forEach(function(id) { document.getElementById(id).value = ''; });
+          loadAllJobs();
+        } else {
+          showPopup('Could not post job: ' + data.error);
+        }
+      })
+      .catch(function() { showPopup('Could not connect to server.'); });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // DELETE JOB
+  // ─────────────────────────────────────────────
+
+  function deleteJob(jobId, btn) {
+    if (!confirm('Are you sure you want to delete this job?')) return;
+
+    fetch('http://localhost:3000/admin/jobs/' + jobId, { method: 'DELETE' })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          showPopup('Job deleted. ✓');
+          loadAllJobs();
+        } else {
+          showPopup('Could not delete job.');
+        }
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // APPLICANTS
+  // ─────────────────────────────────────────────
+
+  function populateJobSelect() {
+    var select = document.getElementById('job-select');
+    select.innerHTML = '<option value="">Select a job...</option>';
+    allJobs.forEach(function(job) {
+      var opt = document.createElement('option');
+      opt.value = job.id;
+      opt.textContent = job.title + ' — ' + job.company;
+      select.appendChild(opt);
+    });
+  }
+
+  function loadApplicants() {
+    var jobId = document.getElementById('job-select').value;
+    var list  = document.getElementById('applicants-list');
+
+    if (!jobId) { list.innerHTML = ''; return; }
+
+    fetch('http://localhost:3000/admin/applicants/' + jobId)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (!data.success || data.applicants.length === 0) {
+          list.innerHTML = '<p style="color:#888888;">No applicants yet for this role.</p>';
+          return;
+        }
+
+        list.innerHTML = `
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>CGPA</th>
+                <th>Applied At</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.applicants.map(function(a) {
+                return `
+                  <tr>
+                    <td>${a.name}</td>
+                    <td style="color:#888888;">${a.email}</td>
+                    <td>${a.department}</td>
+                    <td style="color:#e8503a; font-weight:700;">${a.cgpa}</td>
+                    <td style="color:#888888;">${new Date(a.applied_at).toLocaleDateString('en-IN')}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+      });
+  }
+
+
+  // ─────────────────────────────────────────────
+  // STUDENTS
+  // ─────────────────────────────────────────────
+
+  function loadStudents() {
+    fetch('http://localhost:3000/admin/students')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (!data.success) return;
+
+        var list = document.getElementById('students-list');
+        list.innerHTML = `
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>CGPA</th>
+                <th>Grad Year</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.students.map(function(s) {
+                return `
+                  <tr>
+                    <td style="font-weight:600;">${s.name}</td>
+                    <td style="color:#888888;">${s.email}</td>
+                    <td>${s.department}</td>
+                    <td style="color:#e8503a; font-weight:700;">${s.cgpa}</td>
+                    <td>${s.year}</td>
+                    <td><button class="btn btn-outline btn-small" onclick="viewStudent(${s.id})">View →</button></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+      });
+  }
+
+  function viewStudent(studentId) {
+    fetch('http://localhost:3000/profile/' + studentId)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (!data.success) return;
+        var p = data.profile;
+
+        document.getElementById('modal-name').textContent  = p.name;
+        document.getElementById('modal-sub').textContent   = p.department + ' · ' + p.year + ' · ' + p.email;
+        document.getElementById('modal-cgpa').textContent  = p.cgpa;
+        document.getElementById('modal-bio').textContent   = p.bio || 'No bio added.';
+        document.getElementById('modal-skills-count').textContent = p.skills.length;
+
+        // Count applications
+        fetch('http://localhost:3000/applications/' + studentId)
+          .then(function(r) { return r.json(); })
+          .then(function(apps) {
+            document.getElementById('modal-apps').textContent = apps.length;
+          });
+
+        document.getElementById('modal-skills').innerHTML =
+          p.skills.length > 0
+            ? p.skills.map(function(s) { return '<span class="chip">' + s + '</span>'; }).join('')
+            : '<span style="color:#888888; font-size:13px;">None added.</span>';
+
+        document.getElementById('modal-prefs').innerHTML =
+          p.preferences.length > 0
+            ? p.preferences.map(function(pr) { return '<span class="chip">' + pr + '</span>'; }).join('')
+            : '<span style="color:#888888; font-size:13px;">None added.</span>';
+
+        document.getElementById('modal-certs').innerHTML =
+          p.certs.length > 0
+            ? p.certs.map(function(c) { return '<div style="font-size:13px; margin-bottom:6px;"><strong>' + c.cert_name + '</strong> <span style="color:#888888;">— ' + (c.issuer || '') + '</span></div>'; }).join('')
+            : '<span style="color:#888888; font-size:13px;">None added.</span>';
+
+        document.getElementById('student-modal').classList.add('active');
+      });
+  }
+
+  function closeModal() {
+    document.getElementById('student-modal').classList.remove('active');
+  }
+
+
+  // ─────────────────────────────────────────────
+  // POPUP
+  // ─────────────────────────────────────────────
+
+  function showPopup(message) {
+    var popup = document.getElementById('popup');
+    popup.textContent = message;
+    popup.style.display = 'block';
+    setTimeout(function() { popup.style.display = 'none'; }, 2500);
+  }
+
+
+  // ─────────────────────────────────────────────
+  // JOB DETAIL MODAL
+  // ─────────────────────────────────────────────
+
+  var activeModalJobId = null;
+
+  function openJobModal(jobId) {
+    var job = jobs.find(function(j) { return j.id === jobId; })
+          || recommendationsData.find(function(j) { return j.id === jobId; });
+
+    if (!job) return;
+
+    activeModalJobId = job.id;
+
+    document.getElementById('jm-title').textContent   = job.title;
+    document.getElementById('jm-company').textContent = job.company + ' · ' + job.location;
+    document.getElementById('jm-desc').textContent    = job.description;
+    document.getElementById('jm-ctc').textContent     = job.ctc;
+
+    // Meta pills
+    document.getElementById('jm-meta').innerHTML = `
+      <span class="meta-pill pill-purple">${job.type}</span>
+      <span class="meta-pill">${job.tag}</span>
+      <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
+    `;
+
+    // Skills
+    var skillsEl = document.getElementById('jm-skills');
+    if (job.required_skills) {
+      skillsEl.innerHTML = job.required_skills.split(',').map(function(s) {
+        return '<span class="skill-chip">' + s.trim() + '</span>';
+      }).join('');
+    } else {
+      skillsEl.innerHTML = '<span style="color:#888888; font-size:13px;">No specific skills listed.</span>';
+    }
+
+    // Eligibility
+    document.getElementById('jm-eligibility').textContent =
+      'Minimum CGPA of ' + job.min_cgpa + ' required. ' +
+      (job.required_dept ? 'Open to ' + job.required_dept + ' students only.' : 'Open to all departments.');
+
+    // Apply button state
+    var applyBtn = document.getElementById('jm-apply-btn');
+    if (!loggedInUser) {
+      applyBtn.textContent = 'Login to Apply';
+      applyBtn.className   = 'apply-btn';
+    } else if (appliedIds.includes(job.id)) {
+      applyBtn.textContent = '✓ Applied';
+      applyBtn.className   = 'apply-btn applied';
+    } else {
+      applyBtn.textContent = 'Apply Now';
+      applyBtn.className   = 'apply-btn';
+    }
+
+    document.getElementById('job-modal').classList.add('active');
+  }
+
+  function closeJobModal() {
+    document.getElementById('job-modal').classList.remove('active');
+    activeModalJobId = null;
+  }
+
+  function applyFromModal() {
+    if (!loggedInUser) {
+      closeJobModal();
+      showPage('profile');
+      return;
+    }
+    if (!activeModalJobId || appliedIds.includes(activeModalJobId)) return;
+
+    var btn = document.getElementById('jm-apply-btn');
+    applyJob(activeModalJobId, btn);
+  }
+
+  // ─────────────────────────────────────────────
+// COMPANIES
+// ─────────────────────────────────────────────
+
+function loadCompanies() {
+  fetch('http://localhost:3000/companies')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) return;
+      var list = document.getElementById('companies-list');
+      if (data.companies.length === 0) {
+        list.innerHTML = '<p style="color:#888888;">No companies registered yet.</p>';
+        return;
+      }
+      list.innerHTML = data.companies.map(function(c) {
+        return `
+          <div class="job-list-item">
+            <div class="job-list-info">
+              <h3>${c.logo_emoji} ${c.name}</h3>
+              <p>${c.industry || 'Industry not set'} · ${c.website || 'No website'}</p>
+            </div>
+            <span class="meta-pill">ID: ${c.id}</span>
+          </div>
+        `;
+      }).join('');
+    });
+}
+
+function registerCompany() {
+  var name     = document.getElementById('co-name').value.trim();
+  var industry = document.getElementById('co-industry').value.trim();
+  var website  = document.getElementById('co-website').value.trim();
+  var emoji    = document.getElementById('co-emoji').value.trim() || '🏢';
+  var desc     = document.getElementById('co-desc').value.trim();
+  var username = document.getElementById('co-username').value.trim();
+  var password = document.getElementById('co-password').value.trim();
+
+  if (!name || !username || !password) {
+    showPopup('Company name, username and password are required.');
+    return;
+  }
+
+  fetch('http://localhost:3000/admin/companies', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, industry, description: desc, website, logo_emoji: emoji, username, password })
+  })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showPopup('Company registered! ✓');
+        ['co-name','co-industry','co-website','co-emoji','co-desc','co-username','co-password']
+          .forEach(function(id) { document.getElementById(id).value = ''; });
+        loadCompanies();
+      } else {
+        showPopup('Error: ' + data.error);
+      }
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1127 @@
+* {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background-color: #1c1c1c;
+      border-bottom: 1px solid #3d3d3d;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 800;
+      font-size: 23px;
+    }
+
+    .logo span {
+      color: #e8503a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      color: #888888;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .nav-links button:hover {
+      color: #f0f0f0;
+      background-color: #2e2e2e;
+    }
+
+    .nav-links button.active {
+      color: #f0f0f0;
+      background-color: #2e2e2e;
+    }
+
+
+    /* ── PAGE SHOW/HIDE ── */
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+
+    /* ── BUTTONS ── */
+
+    .btn {
+      display: inline-block;
+      padding: 11px 26px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      background-color: #e8503a;
+      color: #ffffff;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #e8503a;
+      border: 1.5px solid #e8503a;
+    }
+
+
+    /* ════════════════════════
+       PAGE 1 — HOME
+    ════════════════════════ */
+
+    .hero {
+      padding: 112px 40px 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background-color: rgba(232, 80, 58, 0.15);
+      border: 1px solid rgba(232, 80, 58, 0.4);
+      color: #f5a190;
+      font-size: 13px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 19px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #e8503a;
+    }
+
+    .hero p {
+      color: #888888;
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0 auto 35px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    /* Stats */
+
+    .stats-strip {
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid #3d3d3d;
+      border-bottom: 1px solid #3d3d3d;
+      background-color: #252525;
+    }
+
+    .stat-item {
+      flex: 1;
+      padding: 29px 32px;
+      text-align: center;
+      border-right: 1px solid #3d3d3d;
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 32px;
+      font-weight: 800;
+      color: #e8503a;
+    }
+
+    .stat-label {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    /* Features */
+
+    .section {
+      padding: 80px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #e8503a;
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: #888888;
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 19px;
+    }
+
+    .feature-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 14px;
+      padding: 29px;
+    }
+
+    .feature-card:hover {
+      border-color: #e8503a;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* ════════════════════════
+       PAGE 2 — PROFILE
+    ════════════════════════ */
+
+    #page-profile {
+      padding: 48px 40px;
+    }
+
+    .auth-wrap {
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background-color: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 29px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888888;
+    }
+
+    .auth-tab.active {
+      background-color: #e8503a;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .form-card h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .form-card .sub {
+      color: #888888;
+      font-size: 14px;
+      margin-bottom: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: #888888;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #e8503a;
+    }
+
+    .form-group select option {
+      background-color: #252525;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .form-card .btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      font-size: 16px;
+    }
+
+    /* Profile card (shown after login) */
+
+    .profile-card {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 19px;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #e8503a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 27px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .profile-info h2 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .profile-info p {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .profile-badge {
+      margin-left: auto;
+      background-color: rgba(0, 212, 170, 0.1);
+      border: 1px solid rgba(240, 230, 211, 0.3);
+      color: #f0e6d3;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .profile-stat {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 21px 24px;
+    }
+
+    .profile-stat .label {
+      color: #888888;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .profile-stat .value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 19px;
+      font-weight: 700;
+      color: #e8503a;
+    }
+
+    .logout-link {
+      display: block;
+      margin-top: 24px;
+      text-align: center;
+      color: #888888;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .logout-link:hover {
+      color: #e8503a;
+    }
+
+      /* ── PROFILE EXTENDED ── */
+
+    .profile-section-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 19px;
+    }
+
+    .profile-section-card h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #f0f0f0;
+      border-bottom: 1px solid #3d3d3d;
+      padding-bottom: 10px;
+    }
+
+    .profile-view, .profile-edit {
+      display: block;
+    }
+
+    .profile-edit {
+      display: none;
+    }
+
+    .profile-edit.active, .profile-view.active {
+      display: block;
+    }
+
+    /* Bio view */
+    .bio-text {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Skill + pref chips */
+    .chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      background-color: rgba(232,80,58,0.1);
+      color: #f5a190;
+      border: 1px solid rgba(232,80,58,0.25);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-remove {
+      cursor: pointer;
+      color: #888888;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .chip-remove:hover {
+      color: #e8503a;
+    }
+
+    .chip-plain {
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      background-color: #252525;
+      color: #888888;
+      border: 1px solid #3d3d3d;
+    }
+
+    /* Cert row */
+    .cert-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background-color: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .cert-row .cert-info strong {
+      display: block;
+      color: #f0f0f0;
+      font-size: 14px;
+    }
+
+    .cert-row .cert-info span {
+      color: #888888;
+      font-size: 12px;
+    }
+
+    /* Edit inputs inside profile */
+    .profile-input {
+      width: 100%;
+      padding: 10px 14px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .profile-input:focus {
+      border-color: #e8503a;
+    }
+
+    .profile-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+
+    .profile-textarea:focus {
+      border-color: #e8503a;
+    }
+
+    .add-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .add-row input, .add-row select {
+      flex: 1;
+      min-width: 130px;
+      padding: 9px 13px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .add-row input:focus, .add-row select:focus {
+      border-color: #e8503a;
+    }
+
+    .btn-small {
+      padding: 9px 18px;
+      font-size: 13px;
+    }
+
+    .edit-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .section-gap {
+      margin-top: 24px;
+    }
+
+    .empty-text {
+      color: #888888;
+      font-size: 13px;
+      font-style: italic;
+    }
+    /* ════════════════════════
+       PAGE 3 — JOB LISTINGS
+    ════════════════════════ */
+
+    #page-jobs {
+      padding: 48px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .jobs-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 29px;
+    }
+
+    .jobs-header h1 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 29px;
+      font-weight: 700;
+    }
+
+    .jobs-header p {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input,
+    .search-bar select {
+      background-color: #2e2e2e;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      padding: 10px 16px;
+      outline: none;
+    }
+
+    .search-bar input {
+      min-width: 200px;
+    }
+
+    .search-bar input:focus,
+    .search-bar select:focus {
+      border-color: #e8503a;
+    }
+
+    .search-bar select option {
+      background-color: #252525;
+    }
+
+    /* Filter tag pills */
+
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid #3d3d3d;
+      background-color: #2e2e2e;
+      color: #888888;
+    }
+
+    .tag:hover,
+    .tag.active {
+      background-color: #e8503a;
+      border-color: #e8503a;
+      color: #ffffff;
+    }
+
+    /* Job cards grid */
+
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 19px;
+    }
+
+    .job-card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .job-card:hover {
+      border-color: #e8503a;
+    }
+
+    .job-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .company-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      flex-shrink: 0;
+    }
+
+    .job-card-top h3 {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .company-name {
+      color: #888888;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      background-color: #252525;
+      color: #888888;
+      border: 1px solid #3d3d3d;
+    }
+
+    .pill-purple {
+      background-color: rgba(232, 80, 58, 0.1);
+      color: #f5a190;
+      border-color: rgba(232, 80, 58, 0.25);
+    }
+
+    .job-desc {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .job-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .ctc {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 700;
+      color: #f0e6d3;
+      font-size: 16px;
+    }
+
+    .apply-btn {
+      padding: 8px 19px;
+      border-radius: 8px;
+      background-color: #e8503a;
+      color: #ffffff;
+      border: none;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .apply-btn:hover {
+      opacity: 0.85;
+    }
+
+    .apply-btn.applied {
+      background-color: rgba(240, 230, 211, 0.15);
+      color: #f0e6d3;
+      border: 1px solid rgba(240, 230, 211, 0.3);
+      cursor: default;
+    }
+
+    /* ── POPUP MESSAGE ── */
+    /* This is a small notification box that appears briefly at the bottom-right.
+       You may have heard this called a "toast" — same thing, just a different name! */
+
+    #popup {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #2e2e2e;
+      border: 1px solid #f0e6d3;
+      color: #f0e6d3;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      z-index: 999;
+    }
+
+    /* ── FOOTER ── */
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: #888888;
+      font-size: 13px;
+      border-top: 1px solid #3d3d3d;
+      margin-top: 64px;
+    }
+
+
+    /* ════════════════════════
+       RESPONSIVE — MOBILE
+       @media means "apply these styles only when screen width is 600px or less"
+    ════════════════════════ */
+
+    @media (max-width: 600px) {
+
+      /* Nav: stack logo and links vertically */
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 18px;
+        gap: 10px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .nav-links button {
+        font-size: 12px;
+        padding: 6px 8px;
+      }
+
+      /* Hero: shrink text so it fits on small screens */
+      .hero {
+        padding: 48px 18px 40px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      /* Stack the two hero buttons on top of each other */
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+      }
+
+      /* Stats: 2 columns instead of 4 */
+      .stats-strip {
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        flex: 1 1 50%;  /* each item takes up 50% of the row = 2 per row */
+        border-right: none;
+        border-bottom: 1px solid #3d3d3d;
+      }
+
+      .stat-num {
+        font-size: 22px;
+      }
+
+      /* Features section padding */
+      .section {
+        padding: 40px 18px;
+      }
+
+      /* Profile page padding */
+      #page-profile {
+        padding: 24px 18px;
+      }
+
+      /* Register form: make the two-column rows single column */
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      /* Profile header: stack avatar and info vertically */
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+      }
+
+      .profile-badge {
+        margin-left: 0;
+      }
+
+      /* Jobs page padding */
+      #page-jobs {
+        padding: 24px 18px;
+      }
+
+      /* Jobs header: stack title and search bar vertically */
+      .jobs-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      /* Search bar: full width inputs */
+      .search-bar {
+        width: 100%;
+      }
+
+      .search-bar input,
+      .search-bar select {
+        width: 100%;
+        min-width: unset;
+      }
+
+      /* Job cards: single column */
+      .jobs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      /* Popup: full width at bottom */
+      #popup {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        text-align: center;
+      }
+
+    }
+
+    /* ── TABLET (601px to 900px) ── */
+    @media (min-width: 601px) and (max-width: 900px) {
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero {
+        padding: 64px 32px 48px;
+      }
+
+      .section {
+        padding: 48px 32px;
+      }
+
+      #page-profile,
+      #page-jobs {
+        padding: 32px 32px;
+      }
+
+      .jobs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    /* ── JOB MODAL ── */
+.job-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.job-modal-overlay.active { display: flex; }
+
+.job-modal {
+  background-color: #2e2e2e;
+  border: 1px solid #3d3d3d;
+  border-radius: 16px;
+  padding: 36px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.job-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #888888;
+  background: none;
+  border: none;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.job-modal-close:hover { color: #e8503a; }
+
+.job-modal h2 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.job-modal .modal-company {
+  color: #888888;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.job-modal-section {
+  margin-bottom: 20px;
+}
+
+.job-modal-section h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #e8503a;
+  margin-bottom: 10px;
+}
+
+.job-modal-section p {
+  color: #888888;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.job-modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.skill-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  background-color: rgba(232,80,58,0.1);
+  color: #f5a190;
+  border: 1px solid rgba(232,80,58,0.25);
+}
+
+.job-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #3d3d3d;
+}
+
+.job-modal-ctc {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f0e6d3;
+}

@@ -4,854 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PlaceIt — Student Placement Portal</title>
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #1c1c1c;
-      color: #f0f0f0;
-      min-height: 100vh;
-    }
-
-
-    /* ── NAV ── */
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 40px;
-      background-color: #1c1c1c;
-      border-bottom: 1px solid #3d3d3d;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: 800;
-      font-size: 23px;
-    }
-
-    .logo span {
-      color: #e8503a;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 6px;
-    }
-
-    .nav-links button {
-      background: none;
-      border: none;
-      color: #888888;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 15px;
-      padding: 7px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .nav-links button:hover {
-      color: #f0f0f0;
-      background-color: #2e2e2e;
-    }
-
-    .nav-links button.active {
-      color: #f0f0f0;
-      background-color: #2e2e2e;
-    }
-
-
-    /* ── PAGE SHOW/HIDE ── */
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-
-    /* ── BUTTONS ── */
-
-    .btn {
-      display: inline-block;
-      padding: 11px 26px;
-      border-radius: 10px;
-      border: none;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      opacity: 0.85;
-    }
-
-    .btn-primary {
-      background-color: #e8503a;
-      color: #ffffff;
-    }
-
-    .btn-outline {
-      background-color: transparent;
-      color: #e8503a;
-      border: 1.5px solid #e8503a;
-    }
-
-
-    /* ════════════════════════
-       PAGE 1 — HOME
-    ════════════════════════ */
-
-    .hero {
-      padding: 112px 40px 80px;
-      text-align: center;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background-color: rgba(232, 80, 58, 0.15);
-      border: 1px solid rgba(232, 80, 58, 0.4);
-      color: #f5a190;
-      font-size: 13px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      margin-bottom: 24px;
-    }
-
-    .hero h1 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 48px;
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 19px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: #e8503a;
-    }
-
-    .hero p {
-      color: #888888;
-      font-size: 18px;
-      max-width: 520px;
-      margin: 0 auto 35px;
-      line-height: 1.7;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-    }
-
-    /* Stats */
-
-    .stats-strip {
-      display: flex;
-      justify-content: center;
-      border-top: 1px solid #3d3d3d;
-      border-bottom: 1px solid #3d3d3d;
-      background-color: #252525;
-    }
-
-    .stat-item {
-      flex: 1;
-      padding: 29px 32px;
-      text-align: center;
-      border-right: 1px solid #3d3d3d;
-    }
-
-    .stat-item:last-child {
-      border-right: none;
-    }
-
-    .stat-num {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 32px;
-      font-weight: 800;
-      color: #e8503a;
-    }
-
-    .stat-label {
-      color: #888888;
-      font-size: 14px;
-      margin-top: 3px;
-    }
-
-    /* Features */
-
-    .section {
-      padding: 80px 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #e8503a;
-      margin-bottom: 8px;
-    }
-
-    .section h2 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .section-sub {
-      color: #888888;
-      margin-bottom: 40px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 19px;
-    }
-
-    .feature-card {
-      background-color: #2e2e2e;
-      border: 1px solid #3d3d3d;
-      border-radius: 14px;
-      padding: 29px;
-    }
-
-    .feature-card:hover {
-      border-color: #e8503a;
-    }
-
-    .feature-icon {
-      font-size: 24px;
-      margin-bottom: 16px;
-    }
-
-    .feature-card h3 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 17px;
-      margin-bottom: 6px;
-    }
-
-    .feature-card p {
-      color: #888888;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-
-    /* ════════════════════════
-       PAGE 2 — PROFILE
-    ════════════════════════ */
-
-    #page-profile {
-      padding: 48px 40px;
-    }
-
-    .auth-wrap {
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .auth-tabs {
-      display: flex;
-      background-color: #252525;
-      border: 1px solid #3d3d3d;
-      border-radius: 12px;
-      padding: 5px;
-      margin-bottom: 29px;
-    }
-
-    .auth-tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border-radius: 9px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #888888;
-    }
-
-    .auth-tab.active {
-      background-color: #e8503a;
-      color: #ffffff;
-      font-weight: 500;
-    }
-
-    .auth-form {
-      display: none;
-    }
-
-    .auth-form.active {
-      display: block;
-    }
-
-    .form-card {
-      background-color: #2e2e2e;
-      border: 1px solid #3d3d3d;
-      border-radius: 16px;
-      padding: 32px;
-    }
-
-    .form-card h2 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 21px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .form-card .sub {
-      color: #888888;
-      font-size: 14px;
-      margin-bottom: 26px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      color: #888888;
-      margin-bottom: 6px;
-    }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 12px 16px;
-      background-color: #252525;
-      border: 1.5px solid #3d3d3d;
-      border-radius: 10px;
-      color: #f0f0f0;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: #e8503a;
-    }
-
-    .form-group select option {
-      background-color: #252525;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 13px;
-    }
-
-    .form-card .btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 14px;
-      font-size: 16px;
-    }
-
-    /* Profile card (shown after login) */
-
-    .profile-card {
-      display: none;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .profile-header {
-      background-color: #2e2e2e;
-      border: 1px solid #3d3d3d;
-      border-radius: 16px;
-      padding: 32px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 19px;
-      flex-wrap: wrap;
-    }
-
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background-color: #e8503a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 27px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-
-    .profile-info h2 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 21px;
-      font-weight: 700;
-    }
-
-    .profile-info p {
-      color: #888888;
-      font-size: 14px;
-      margin-top: 2px;
-    }
-
-    .profile-badge {
-      margin-left: auto;
-      background-color: rgba(0, 212, 170, 0.1);
-      border: 1px solid rgba(240, 230, 211, 0.3);
-      color: #f0e6d3;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-    }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 16px;
-    }
-
-    .profile-stat {
-      background-color: #2e2e2e;
-      border: 1px solid #3d3d3d;
-      border-radius: 12px;
-      padding: 21px 24px;
-    }
-
-    .profile-stat .label {
-      color: #888888;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-
-    .profile-stat .value {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 19px;
-      font-weight: 700;
-      color: #e8503a;
-    }
-
-    .logout-link {
-      display: block;
-      margin-top: 24px;
-      text-align: center;
-      color: #888888;
-      font-size: 14px;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .logout-link:hover {
-      color: #e8503a;
-    }
-
-
-    /* ════════════════════════
-       PAGE 3 — JOB LISTINGS
-    ════════════════════════ */
-
-    #page-jobs {
-      padding: 48px 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .jobs-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 29px;
-    }
-
-    .jobs-header h1 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 29px;
-      font-weight: 700;
-    }
-
-    .jobs-header p {
-      color: #888888;
-      font-size: 14px;
-      margin-top: 3px;
-    }
-
-    .search-bar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .search-bar input,
-    .search-bar select {
-      background-color: #2e2e2e;
-      border: 1.5px solid #3d3d3d;
-      border-radius: 10px;
-      color: #f0f0f0;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      padding: 10px 16px;
-      outline: none;
-    }
-
-    .search-bar input {
-      min-width: 200px;
-    }
-
-    .search-bar input:focus,
-    .search-bar select:focus {
-      border-color: #e8503a;
-    }
-
-    .search-bar select option {
-      background-color: #252525;
-    }
-
-    /* Filter tag pills */
-
-    .filter-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-
-    .tag {
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      cursor: pointer;
-      border: 1px solid #3d3d3d;
-      background-color: #2e2e2e;
-      color: #888888;
-    }
-
-    .tag:hover,
-    .tag.active {
-      background-color: #e8503a;
-      border-color: #e8503a;
-      color: #ffffff;
-    }
-
-    /* Job cards grid */
-
-    .jobs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 19px;
-    }
-
-    .job-card {
-      background-color: #2e2e2e;
-      border: 1px solid #3d3d3d;
-      border-radius: 16px;
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .job-card:hover {
-      border-color: #e8503a;
-    }
-
-    .job-card-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .company-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 21px;
-      flex-shrink: 0;
-    }
-
-    .job-card-top h3 {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .company-name {
-      color: #888888;
-      font-size: 14px;
-      margin-top: 2px;
-    }
-
-    .job-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .meta-pill {
-      padding: 4px 11px;
-      border-radius: 6px;
-      font-size: 12px;
-      background-color: #252525;
-      color: #888888;
-      border: 1px solid #3d3d3d;
-    }
-
-    .pill-purple {
-      background-color: rgba(232, 80, 58, 0.1);
-      color: #f5a190;
-      border-color: rgba(232, 80, 58, 0.25);
-    }
-
-    .job-desc {
-      color: #888888;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .job-card-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-    }
-
-    .ctc {
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: 700;
-      color: #f0e6d3;
-      font-size: 16px;
-    }
-
-    .apply-btn {
-      padding: 8px 19px;
-      border-radius: 8px;
-      background-color: #e8503a;
-      color: #ffffff;
-      border: none;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .apply-btn:hover {
-      opacity: 0.85;
-    }
-
-    .apply-btn.applied {
-      background-color: rgba(240, 230, 211, 0.15);
-      color: #f0e6d3;
-      border: 1px solid rgba(240, 230, 211, 0.3);
-      cursor: default;
-    }
-
-    /* ── POPUP MESSAGE ── */
-    /* This is a small notification box that appears briefly at the bottom-right.
-       You may have heard this called a "toast" — same thing, just a different name! */
-
-    #popup {
-      display: none;
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background-color: #2e2e2e;
-      border: 1px solid #f0e6d3;
-      color: #f0e6d3;
-      padding: 13px 22px;
-      border-radius: 10px;
-      font-size: 14px;
-      z-index: 999;
-    }
-
-    /* ── FOOTER ── */
-
-    footer {
-      text-align: center;
-      padding: 32px;
-      color: #888888;
-      font-size: 13px;
-      border-top: 1px solid #3d3d3d;
-      margin-top: 64px;
-    }
-
-
-    /* ════════════════════════
-       RESPONSIVE — MOBILE
-       @media means "apply these styles only when screen width is 600px or less"
-    ════════════════════════ */
-
-    @media (max-width: 600px) {
-
-      /* Nav: stack logo and links vertically */
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 14px 18px;
-        gap: 10px;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .nav-links button {
-        font-size: 12px;
-        padding: 6px 8px;
-      }
-
-      /* Hero: shrink text so it fits on small screens */
-      .hero {
-        padding: 48px 18px 40px;
-      }
-
-      .hero h1 {
-        font-size: 28px;
-      }
-
-      .hero p {
-        font-size: 14px;
-      }
-
-      /* Stack the two hero buttons on top of each other */
-      .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .hero-buttons .btn {
-        width: 100%;
-        max-width: 280px;
-        text-align: center;
-      }
-
-      /* Stats: 2 columns instead of 4 */
-      .stats-strip {
-        flex-wrap: wrap;
-      }
-
-      .stat-item {
-        flex: 1 1 50%;  /* each item takes up 50% of the row = 2 per row */
-        border-right: none;
-        border-bottom: 1px solid #3d3d3d;
-      }
-
-      .stat-num {
-        font-size: 22px;
-      }
-
-      /* Features section padding */
-      .section {
-        padding: 40px 18px;
-      }
-
-      /* Profile page padding */
-      #page-profile {
-        padding: 24px 18px;
-      }
-
-      /* Register form: make the two-column rows single column */
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      /* Profile header: stack avatar and info vertically */
-      .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-      }
-
-      .profile-badge {
-        margin-left: 0;
-      }
-
-      /* Jobs page padding */
-      #page-jobs {
-        padding: 24px 18px;
-      }
-
-      /* Jobs header: stack title and search bar vertically */
-      .jobs-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      /* Search bar: full width inputs */
-      .search-bar {
-        width: 100%;
-      }
-
-      .search-bar input,
-      .search-bar select {
-        width: 100%;
-        min-width: unset;
-      }
-
-      /* Job cards: single column */
-      .jobs-grid {
-        grid-template-columns: 1fr;
-      }
-
-      /* Popup: full width at bottom */
-      #popup {
-        left: 18px;
-        right: 18px;
-        bottom: 18px;
-        text-align: center;
-      }
-
-    }
-
-    /* ── TABLET (601px to 900px) ── */
-    @media (min-width: 601px) and (max-width: 900px) {
-
-      .hero h1 {
-        font-size: 36px;
-      }
-
-      .hero {
-        padding: 64px 32px 48px;
-      }
-
-      .section {
-        padding: 48px 32px;
-      }
-
-      #page-profile,
-      #page-jobs {
-        padding: 32px 32px;
-      }
-
-      .jobs-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-    }
-
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -977,7 +130,7 @@
           </div>
           <div class="form-group">
             <label>College Email</label>
-            <input type="email" id="reg-email" placeholder="you@college.edu" />
+            <input type="email" id="reg-email" placeholder="name@college.edu" />
           </div>
           <div class="form-group">
             <label>Department</label>
@@ -1013,6 +166,8 @@
 
   <!-- Profile card shown after login -->
   <div id="profile-section" class="profile-card">
+
+    <!-- Header -->
     <div class="profile-header">
       <div class="avatar" id="avatar-initials">AS</div>
       <div class="profile-info">
@@ -1022,24 +177,132 @@
       </div>
       <div class="profile-badge">✓ Eligible</div>
     </div>
-    <div class="profile-grid">
+
+    <!-- Stats -->
+    <div class="profile-grid" style="margin-top:19px;">
       <div class="profile-stat">
         <div class="label">CGPA</div>
         <div class="value" id="profile-cgpa">8.5</div>
       </div>
       <div class="profile-stat">
-        <div class="label">Applications Sent</div>
+        <div class="label">Applications</div>
         <div class="value" id="profile-apps">0</div>
       </div>
       <div class="profile-stat">
-        <div class="label">Shortlisted</div>
-        <div class="value">—</div>
+        <div class="label">Skills</div>
+        <div class="value" id="profile-skills-count">0</div>
       </div>
       <div class="profile-stat">
-        <div class="label">Offers</div>
-        <div class="value">—</div>
+        <div class="label">Certifications</div>
+        <div class="value" id="profile-certs-count">0</div>
       </div>
     </div>
+
+    <!-- Main profile card — single unified section -->
+    <div class="profile-section-card" style="margin-top:19px;">
+
+      <!-- BIO -->
+      <h3>About</h3>
+      <div class="profile-view active" id="view-bio">
+        <p class="bio-text" id="display-bio">No bio added yet.</p>
+      </div>
+      <div class="profile-edit" id="edit-bio">
+        <textarea class="profile-textarea" id="input-bio" rows="3" placeholder="Tell companies about yourself..."></textarea>
+      </div>
+
+      <!-- PREFERENCES -->
+      <div class="section-gap">
+        <h3>Job Preferences</h3>
+        <div class="profile-view active" id="view-prefs">
+          <div class="chips-wrap" id="display-prefs">
+            <span class="empty-text">No preferences added yet.</span>
+          </div>
+        </div>
+        <div class="profile-edit" id="edit-prefs">
+          <div class="chips-wrap" id="edit-prefs-chips"></div>
+          <div class="add-row">
+            <select id="pref-select">
+              <option value="">Select preference</option>
+              <option value="tech">Tech</option>
+              <option value="finance">Finance</option>
+              <option value="core">Core</option>
+              <option value="consulting">Consulting</option>
+            </select>
+            <button class="btn btn-outline btn-small" onclick="addPref()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="section-gap">
+        <h3>Skills</h3>
+        <div class="profile-view active" id="view-skills">
+          <div class="chips-wrap" id="display-skills">
+            <span class="empty-text">No skills added yet.</span>
+          </div>
+        </div>
+        <div class="profile-edit" id="edit-skills">
+          <div class="chips-wrap" id="edit-skills-chips"></div>
+          <div class="add-row">
+            <input type="text" id="skill-input" placeholder="e.g. Python, SQL..." list="skills-suggestions" />
+            <datalist id="skills-suggestions">
+              <option value="Python">
+              <option value="Java">
+              <option value="JavaScript">
+              <option value="C++">
+              <option value="SQL">
+              <option value="DSA">
+              <option value="System Design">
+              <option value="Machine Learning">
+              <option value="Data Analysis">
+              <option value="Excel">
+              <option value="Financial Modelling">
+              <option value="Product Thinking">
+              <option value="Communication">
+              <option value="Problem Solving">
+              <option value="VLSI">
+              <option value="Verilog">
+              <option value="Electronics">
+              <option value="CAD">
+              <option value="AutoCAD">
+              <option value="Mechanical Design">
+              <option value="React">
+              <option value="Node.js">
+              <option value="HTML">
+              <option value="CSS">
+            </datalist>
+            <button class="btn btn-outline btn-small" onclick="addSkillChip()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CERTIFICATIONS -->
+      <div class="section-gap">
+        <h3>Certifications</h3>
+        <div class="profile-view active" id="view-certs">
+          <div id="display-certs">
+            <span class="empty-text">No certifications added yet.</span>
+          </div>
+        </div>
+        <div class="profile-edit" id="edit-certs">
+          <div id="edit-certs-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;"></div>
+          <div class="add-row">
+            <input type="text" id="cert-name-input" placeholder="Certificate name" />
+            <input type="text" id="cert-issuer-input" placeholder="Issuer (e.g. Coursera)" />
+            <button class="btn btn-outline btn-small" onclick="addCertRow()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDIT / SAVE BAR -->
+      <div class="edit-bar">
+        <button class="btn btn-outline" id="edit-btn" onclick="toggleEditMode(true)">✏️ Edit Profile</button>
+        <button class="btn btn-primary" id="save-btn" style="display:none;" onclick="saveProfile()">Save Changes →</button>
+        <button class="btn btn-outline" id="cancel-btn" style="display:none;" onclick="toggleEditMode(false)">Cancel</button>
+      </div>
+
+    </div>
+
     <span class="logout-link" onclick="handleLogout()">Sign out</span>
   </div>
 
@@ -1072,7 +335,13 @@
     <span class="tag" onclick="setTag(this, 'consulting')">Consulting</span>
   </div>
 
-  <div class="jobs-grid" id="jobs-grid"></div>
+  <!-- Recommendations section — only shown when logged in -->
+<div id="recommendations-section" style="display:none; margin-bottom: 40px;">
+  <div class="section-label" style="margin-bottom: 8px;">⚡ Recommended for You</div>
+  <h2 style="font-family:'Courier New',Courier,monospace; font-size:22px; font-weight:700; margin-bottom:6px;">Based on your profile</h2>
+  <p style="color:#888888; font-size:14px; margin-bottom:20px;">Jobs you're eligible for, ranked by match score.</p>
+  <div class="jobs-grid" id="recommendations-grid"></div>
+</div>
 
 </div>
 
@@ -1110,7 +379,8 @@
     document.getElementById('nav-' + name).classList.add('active');
 
     if (name === 'jobs') {
-      loadJobs(); // fetch from server instead of just rendering
+      loadJobs(); 
+      loadRecommendations();
     }
   }
 
@@ -1213,7 +483,6 @@
       .then(function(res) { return res.json(); })
       .then(function(data) {
         if (data.success) {
-          // After registering, immediately log them in
           loggedInUser = {
             id:    data.studentId,
             name:  fname + ' ' + lname,
@@ -1222,7 +491,7 @@
             cgpa:  cgpa,
             year:  year
           };
-          appliedIds = []; // fresh account, no applications yet
+          appliedIds = []; //fresh account, no applications yet
           showProfile();
         } else {
           showPopup(data.error);
@@ -1272,6 +541,7 @@
     document.getElementById('profile-email').textContent = loggedInUser.email;
     document.getElementById('profile-cgpa').textContent  = loggedInUser.cgpa;
     document.getElementById('profile-apps').textContent  = appliedIds.length;
+    loadFullProfile();
   }
 
 
@@ -1282,7 +552,8 @@
   function handleLogout() {
     loggedInUser = null;
     appliedIds   = [];
-
+    document.getElementById('recommendations-section').style.display = 'none';
+    document.getElementById('recommendations-grid').innerHTML = '';
     document.getElementById('auth-section').style.display    = 'block';
     document.getElementById('profile-section').style.display = 'none';
     document.getElementById('login-email').value = '';
@@ -1295,15 +566,21 @@
   // ─────────────────────────────────────────────
 
   function renderJobs() {
+      if (loggedInUser && recommendationsData.length > 0) {
+      document.getElementById('recommendations-grid').innerHTML = '';
+      return;
+    }
     var searchText = document.getElementById('search-input').value.toLowerCase();
     var typeFilter = document.getElementById('filter-type').value;
+    var recIds     = recommendationsData.map(function(j) { return j.id; });
 
     var filtered = jobs.filter(function(job) {
-      var matchesSearch = job.title.toLowerCase().includes(searchText) || job.company.toLowerCase().includes(searchText);
-      var matchesType   = (typeFilter === '') || (job.type === typeFilter);
-      var matchesTag    = (activeTag  === '') || (job.tag  === activeTag);
-      return matchesSearch && matchesType && matchesTag;
-    });
+    var matchesSearch = job.title.toLowerCase().includes(searchText) || job.company.toLowerCase().includes(searchText);
+    var matchesType   = (typeFilter === '') || (job.type === typeFilter);
+    var matchesTag    = (activeTag  === '') || (job.tag  === activeTag);
+    var notRecommended = !recIds.includes(job.id); 
+    return matchesSearch && matchesType && matchesTag && notRecommended; 
+  });
 
     var grid = document.getElementById('jobs-grid');
 
@@ -1384,8 +661,74 @@
   // FILTER & TAG
   // ─────────────────────────────────────────────
 
+  // ─────────────────────────────────────────────
+  // LOAD RECOMMENDATIONS — GET /recommendations/:studentId
+  // ─────────────────────────────────────────────
+var recommendationsData = []; // store recommendations globally
+
+function loadRecommendations() {
+    if (!loggedInUser) return;
+
+    fetch('http://localhost:3000/recommendations/' + loggedInUser.id)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (!data.success) return;
+        recommendationsData = data.recommendations;
+        renderRecommendations();
+      })
+      .catch(function(err) { console.log('Could not load recommendations:', err); });
+  }
+
+  function renderRecommendations() {
+    if (!loggedInUser || recommendationsData.length === 0) return;
+
+    var searchText = document.getElementById('search-input').value.toLowerCase();
+    var typeFilter = document.getElementById('filter-type').value;
+
+    var filtered = recommendationsData.filter(function(job) {
+      var matchesSearch = job.title.toLowerCase().includes(searchText) || job.company.toLowerCase().includes(searchText);
+      var matchesType   = (typeFilter === '') || (job.type === typeFilter);
+      var matchesTag    = (activeTag  === '') || (job.tag  === activeTag);
+      return matchesSearch && matchesType && matchesTag;
+    });
+
+    document.getElementById('recommendations-section').style.display =
+      filtered.length > 0 ? 'block' : 'none';
+
+    var grid = document.getElementById('recommendations-grid');
+    grid.innerHTML = filtered.map(function(job) {
+      var isApplied = appliedIds.includes(job.id);
+      var btnText   = isApplied ? '✓ Applied' : 'Apply Now';
+      var btnClass  = isApplied ? 'apply-btn applied' : 'apply-btn';
+
+      return `
+        <div class="job-card" onclick="openJobModal(${job.id})" style="cursor:pointer;">
+          <div class="job-card-top">
+            <div class="company-logo" style="background-color:#2a2a2a">🏢</div>
+            <div>
+              <h3>${job.title}</h3>
+              <div class="company-name">${job.company} · ${job.location}</div>
+            </div>
+          </div>
+          <div class="job-meta">
+            <span class="meta-pill pill-purple">${job.type}</span>
+            <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
+            <span class="meta-pill">${job.tag}</span>
+            <span class="meta-pill" style="background-color:rgba(232,80,58,0.15); color:#e8503a; border-color:rgba(232,80,58,0.3);">⚡ ${job.match_score}% match</span>
+          </div>
+          <p class="job-desc">${job.description.substring(0, 80)}${job.description.length > 80 ? '...' : ''}</p>
+          <div class="job-card-bottom">
+            <span class="ctc">${job.ctc}</span>
+            <button class="${btnClass}" onclick="applyJob(${job.id}, this)">${btnText}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   function filterJobs() {
     renderJobs();
+    renderRecommendations();
   }
 
   function setTag(clickedTag, tagValue) {
@@ -1393,6 +736,7 @@
     document.querySelectorAll('.tag').forEach(function(t) { t.classList.remove('active'); });
     clickedTag.classList.add('active');
     renderJobs();
+    renderRecommendations();
   }
 
 
@@ -1409,8 +753,359 @@
     }, 2500);
   }
 
+  // ─────────────────────────────────────────────
+// PROFILE STATE
+// ─────────────────────────────────────────────
 
-  // Load jobs on startup so they're ready when user navigates to the jobs page
+var profileData = {
+  bio: '',
+  skills: [],
+  preferences: [],
+  certs: []
+};
+
+var pendingSkills   = []; // skills to add on save
+var pendingPrefs    = []; // prefs to add on save
+var pendingCerts    = []; // certs to add on save
+var removedSkills   = []; // skills to delete on save
+var removedPrefs    = []; // prefs to delete on save
+var removedCerts    = []; // certs to delete on save
+
+
+// ─────────────────────────────────────────────
+// LOAD FULL PROFILE — GET /profile/:studentId
+// ─────────────────────────────────────────────
+
+function loadFullProfile() {
+  if (!loggedInUser) return;
+
+  fetch('http://localhost:3000/profile/' + loggedInUser.id)
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) return;
+
+      profileData.bio         = data.profile.bio || '';
+      profileData.skills      = data.profile.skills || [];
+      profileData.preferences = data.profile.preferences || [];
+      profileData.certs       = data.profile.certs || [];
+
+      renderProfileView();
+
+      // update stat counts
+      document.getElementById('profile-skills-count').textContent = profileData.skills.length;
+      document.getElementById('profile-certs-count').textContent  = profileData.certs.length;
+    })
+    .catch(function(err) { console.log('Could not load profile:', err); });
+}
+
+
+// ─────────────────────────────────────────────
+// RENDER PROFILE VIEW MODE (read-only)
+// ─────────────────────────────────────────────
+
+function renderProfileView() {
+  // Bio
+  document.getElementById('display-bio').textContent =
+    profileData.bio || 'No bio added yet.';
+
+  // Preferences
+  var prefsEl = document.getElementById('display-prefs');
+  if (profileData.preferences.length === 0) {
+    prefsEl.innerHTML = '<span class="empty-text">No preferences added yet.</span>';
+  } else {
+    prefsEl.innerHTML = profileData.preferences.map(function(p) {
+      return '<span class="chip">' + p + '</span>';
+    }).join('');
+  }
+
+  // Skills
+  var skillsEl = document.getElementById('display-skills');
+  if (profileData.skills.length === 0) {
+    skillsEl.innerHTML = '<span class="empty-text">No skills added yet.</span>';
+  } else {
+    skillsEl.innerHTML = profileData.skills.map(function(s) {
+      return '<span class="chip">' + s + '</span>';
+    }).join('');
+  }
+
+  // Certs
+  var certsEl = document.getElementById('display-certs');
+  if (profileData.certs.length === 0) {
+    certsEl.innerHTML = '<span class="empty-text">No certifications added yet.</span>';
+  } else {
+    certsEl.innerHTML = profileData.certs.map(function(c) {
+      return `
+        <div class="cert-row">
+          <div class="cert-info">
+            <strong>${c.cert_name}</strong>
+            <span>${c.issuer || ''}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// RENDER EDIT MODE CHIPS
+// ─────────────────────────────────────────────
+
+function renderEditChips() {
+  // Skills chips in edit mode
+  var editSkills = document.getElementById('edit-skills-chips');
+  var allSkills  = profileData.skills.concat(pendingSkills).filter(function(s) {
+    return !removedSkills.includes(s);
+  });
+  editSkills.innerHTML = allSkills.map(function(s) {
+    return `<span class="chip">${s} <span class="chip-remove" onclick="removeSkillChip('${s}')">×</span></span>`;
+  }).join('');
+
+  // Prefs chips in edit mode
+  var editPrefs = document.getElementById('edit-prefs-chips');
+  var allPrefs  = profileData.preferences.concat(pendingPrefs).filter(function(p) {
+    return !removedPrefs.includes(p);
+  });
+  editPrefs.innerHTML = allPrefs.map(function(p) {
+    return `<span class="chip">${p} <span class="chip-remove" onclick="removePrefChip('${p}')">×</span></span>`;
+  }).join('');
+
+  // Certs in edit mode
+  var editCerts = document.getElementById('edit-certs-list');
+  var allCerts  = profileData.certs.concat(pendingCerts).filter(function(c) {
+    return !removedCerts.includes(c.cert_name);
+  });
+  editCerts.innerHTML = allCerts.map(function(c) {
+    return `
+      <div class="cert-row">
+        <div class="cert-info">
+          <strong>${c.cert_name}</strong>
+          <span>${c.issuer || ''}</span>
+        </div>
+        <span class="chip-remove" onclick="removeCertRow('${c.cert_name}')" style="cursor:pointer; font-size:18px; color:#888;">×</span>
+      </div>
+    `;
+  }).join('');
+}
+
+
+// ─────────────────────────────────────────────
+// TOGGLE EDIT MODE
+// ─────────────────────────────────────────────
+
+function toggleEditMode(editing) {
+  // Reset pending changes
+  pendingSkills = [];
+  pendingPrefs  = [];
+  pendingCerts  = [];
+  removedSkills = [];
+  removedPrefs  = [];
+  removedCerts  = [];
+
+  var views = document.querySelectorAll('.profile-view');
+  var edits = document.querySelectorAll('.profile-edit');
+
+  if (editing) {
+    views.forEach(function(v) { v.classList.remove('active'); });
+    edits.forEach(function(e) { e.classList.add('active'); });
+    document.getElementById('edit-btn').style.display  = 'none';
+    document.getElementById('save-btn').style.display  = 'inline-block';
+    document.getElementById('cancel-btn').style.display = 'inline-block';
+
+    // Pre-fill bio
+    document.getElementById('input-bio').value = profileData.bio;
+
+    // Render chips in edit mode
+    renderEditChips();
+
+  } else {
+    views.forEach(function(v) { v.classList.add('active'); });
+    edits.forEach(function(e) { e.classList.remove('active'); });
+    document.getElementById('edit-btn').style.display   = 'inline-block';
+    document.getElementById('save-btn').style.display   = 'none';
+    document.getElementById('cancel-btn').style.display = 'none';
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// ADD / REMOVE CHIPS (in edit mode, before saving)
+// ─────────────────────────────────────────────
+
+function addSkillChip() {
+  var input = document.getElementById('skill-input');
+  var skill = input.value.trim();
+  if (!skill) return;
+
+  var allSkills = profileData.skills.concat(pendingSkills).filter(function(s) {
+    return !removedSkills.includes(s);
+  });
+  if (allSkills.includes(skill)) {
+    showPopup('Skill already added!');
+    return;
+  }
+
+  pendingSkills.push(skill);
+  input.value = '';
+  renderEditChips();
+}
+
+function removeSkillChip(skill) {
+  if (profileData.skills.includes(skill)) {
+    removedSkills.push(skill);
+  } else {
+    pendingSkills = pendingSkills.filter(function(s) { return s !== skill; });
+  }
+  renderEditChips();
+}
+
+function addPref() {
+  var select = document.getElementById('pref-select');
+  var pref   = select.value;
+  if (!pref) return;
+
+  var allPrefs = profileData.preferences.concat(pendingPrefs).filter(function(p) {
+    return !removedPrefs.includes(p);
+  });
+  if (allPrefs.includes(pref)) {
+    showPopup('Preference already added!');
+    return;
+  }
+
+  pendingPrefs.push(pref);
+  select.value = '';
+  renderEditChips();
+}
+
+function removePrefChip(pref) {
+  if (profileData.preferences.includes(pref)) {
+    removedPrefs.push(pref);
+  } else {
+    pendingPrefs = pendingPrefs.filter(function(p) { return p !== pref; });
+  }
+  renderEditChips();
+}
+
+function addCertRow() {
+  var nameInput   = document.getElementById('cert-name-input');
+  var issuerInput = document.getElementById('cert-issuer-input');
+  var certName    = nameInput.value.trim();
+  var issuer      = issuerInput.value.trim();
+
+  if (!certName) { showPopup('Please enter a certificate name.'); return; }
+
+  pendingCerts.push({ cert_name: certName, issuer: issuer });
+  nameInput.value   = '';
+  issuerInput.value = '';
+  renderEditChips();
+}
+
+function removeCertRow(certName) {
+  var existing = profileData.certs.find(function(c) { return c.cert_name === certName; });
+  if (existing) {
+    removedCerts.push(certName);
+  } else {
+    pendingCerts = pendingCerts.filter(function(c) { return c.cert_name !== certName; });
+  }
+  renderEditChips();
+}
+
+
+// ─────────────────────────────────────────────
+// SAVE PROFILE — fires all API calls then refreshes
+// ─────────────────────────────────────────────
+
+function saveProfile() {
+  var bio = document.getElementById('input-bio').value.trim();
+  var promises = [];
+
+  // 1. Save bio
+  promises.push(
+    fetch('http://localhost:3000/profile/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId: loggedInUser.id, bio: bio })
+    })
+  );
+
+  // 2. Add new skills
+  pendingSkills.forEach(function(skill) {
+    promises.push(
+      fetch('http://localhost:3000/profile/skills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, skill: skill })
+      })
+    );
+  });
+
+  // 3. Remove deleted skills
+  removedSkills.forEach(function(skill) {
+    promises.push(
+      fetch('http://localhost:3000/profile/skills', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, skill: skill })
+      })
+    );
+  });
+
+  // 4. Add new prefs
+  pendingPrefs.forEach(function(pref) {
+    promises.push(
+      fetch('http://localhost:3000/profile/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, preference: pref })
+      })
+    );
+  });
+
+  // 5. Remove deleted prefs
+  removedPrefs.forEach(function(pref) {
+    promises.push(
+      fetch('http://localhost:3000/profile/preferences', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, preference: pref })
+      })
+    );
+  });
+
+  // 6. Add new certs
+  pendingCerts.forEach(function(cert) {
+    promises.push(
+      fetch('http://localhost:3000/profile/certs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, cert_name: cert.cert_name, issuer: cert.issuer })
+      })
+    );
+  });
+
+  // 7. Remove deleted certs
+  removedCerts.forEach(function(certName) {
+    promises.push(
+      fetch('http://localhost:3000/profile/certs', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId: loggedInUser.id, cert_name: certName })
+      })
+    );
+  });
+
+  Promise.all(promises)
+    .then(function() {
+      showPopup('Profile saved! ✓');
+      toggleEditMode(false);
+      loadFullProfile(); // refresh from DB
+    })
+    .catch(function(err) {
+      console.log('Save error:', err);
+      showPopup('Could not save profile.');
+    });
+  }
+
   loadJobs();
   
 </script>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlaceIt — Admin Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid #3d3d3d;
+    }
+    .logo { font-weight: 800; font-size: 23px; }
+    .logo span { color: #e8503a; }
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    .login-wrap { width: 100%; max-width: 420px; }
+    .role-tabs {
+      display: flex;
+      background-color: #252525;
+      border: 1px solid #3d3d3d;
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+    .role-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888888;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .role-tab.active { background-color: #e8503a; color: #fff; font-weight: 600; }
+    .card {
+      background-color: #2e2e2e;
+      border: 1px solid #3d3d3d;
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .card h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .card p { color: #888888; font-size: 14px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 14px; color: #888888; margin-bottom: 6px; }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1.5px solid #3d3d3d;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-group input:focus { border-color: #e8503a; }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #e8503a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn:hover { opacity: 0.85; }
+    .error-msg { color: #e8503a; font-size: 13px; margin-top: 12px; display: none; text-align: center; }
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #888888;
+      font-size: 13px;
+      border-top: 1px solid #3d3d3d;
+    }
+  </style>
+</head>
+<body>
+  <nav><div class="logo">Place<span>d</span> <span style="font-size:14px; color:#888888; font-weight:400;">· Admin Portal</span></div></nav>
+
+  <div class="main">
+    <div class="login-wrap">
+      <div class="role-tabs">
+        <div class="role-tab active" onclick="switchRole('super', this)">🔐 Super Admin</div>
+        <div class="role-tab" onclick="switchRole('company', this)">🏢 Company Admin</div>
+      </div>
+
+      <div class="card">
+        <h2 id="login-title">Super Admin Login</h2>
+        <p id="login-sub">Access the full placement management panel.</p>
+        <div class="form-group">
+          <label id="field-label">Username</label>
+          <input type="text" id="login-username" placeholder="admin" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" />
+        </div>
+        <button class="btn" onclick="handleLogin()">Sign In →</button>
+        <p class="error-msg" id="error-msg">Invalid credentials. Try again.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>Placed · Admin Portal · © 2025</footer>
+
+  <script>
+    // If already logged in, skip login page
+    if (localStorage.getItem('superAdmin')) {
+        window.location.href = '/admin.html';
+    }
+    if (localStorage.getItem('companyAdmin')) {
+        window.location.href = '/company-admin.html';
+    }
+    var selectedRole = 'super';
+
+    function switchRole(role, el) {
+      selectedRole = role;
+      document.querySelectorAll('.role-tab').forEach(function(t) { t.classList.remove('active'); });
+      el.classList.add('active');
+
+      if (role === 'super') {
+        document.getElementById('login-title').textContent = 'Super Admin Login';
+        document.getElementById('login-sub').textContent   = 'Access the full placement management panel.';
+        document.getElementById('login-username').placeholder = 'admin';
+      } else {
+        document.getElementById('login-title').textContent = 'Company Admin Login';
+        document.getElementById('login-sub').textContent   = 'Access your company\'s placement dashboard.';
+        document.getElementById('login-username').placeholder = 'e.g. google_admin';
+      }
+
+      document.getElementById('error-msg').style.display = 'none';
+    }
+
+    function handleLogin() {
+      var username = document.getElementById('login-username').value.trim();
+      var password = document.getElementById('login-password').value;
+      var errEl    = document.getElementById('error-msg');
+      errEl.style.display = 'none';
+
+      if (!username || !password) {
+        errEl.textContent    = 'Please fill in all fields.';
+        errEl.style.display  = 'block';
+        return;
+      }
+
+      var endpoint = selectedRole === 'super'
+        ? 'http://localhost:3000/admin/login'
+        : 'http://localhost:3000/admin/company-login';
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, password: password })
+      })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.success) {
+            if (selectedRole === 'super') {
+                localStorage.setItem('superAdmin', 'true');
+                window.location.href = '/admin.html';
+            } else {
+              // Store company admin info and redirect
+              localStorage.setItem('companyAdmin', JSON.stringify(data.admin));
+              window.location.href = '/company-admin.html';
+            }
+          } else {
+            errEl.textContent   = data.error || 'Invalid credentials.';
+            errEl.style.display = 'block';
+          }
+        })
+        .catch(function() {
+          errEl.textContent   = 'Could not connect to server.';
+          errEl.style.display = 'block';
+        });
+    }
+  </script>
+</body>
+</html>
