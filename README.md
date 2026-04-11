@@ -6,7 +6,7 @@ A full-stack student placement portal. Students can register, browse job listing
 
 ## Tech Stack
 
-- **Frontend** — HTML, CSS, Vanilla JS (single page, no frameworks)
+- **Frontend** — HTML, CSS, Vanilla JS (no frameworks)
 - **Backend** — Node.js + Express
 - **Database** — MySQL
 
