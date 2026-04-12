@@ -369,8 +369,8 @@ app.post('/admin/login', function(req, res) {
 // ROUTE 16 — POST /admin/jobs (post new job)
 app.post('/admin/jobs', function(req, res) {
   var b = req.body;
-  var sql = 'INSERT INTO jobs (title, company, type, tag, location, ctc, min_cgpa, required_skills, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  db.query(sql, [b.title, b.company, b.type, b.tag, b.location, b.ctc, b.min_cgpa, b.required_skills, b.description], function(err, result) {
+  var sql = 'INSERT INTO jobs (title, company, type, tag, location, ctc, min_cgpa, required_skills, description, deadline) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [b.title, b.company, b.type, b.tag, b.location, b.ctc, b.min_cgpa, b.required_skills, b.description, b.deadline || null], function(err, result) {
     if (err) return res.status(500).json({ success: false, error: err.message });
     res.json({ success: true, jobId: result.insertId });
   });
@@ -415,7 +415,7 @@ app.get('/companies', function(req, res) {
   });
 });
 
-// ROUTE 21 — GET /companies/:id (company profile + their jobs)
+// ROUTE 21 — GET /companies/:id
 app.get('/companies/:id', function(req, res) {
   db.query('SELECT * FROM companies WHERE id = ?', [req.params.id], function(err, companies) {
     if (err) return res.status(500).json({ success: false, error: err.message });
@@ -495,19 +495,18 @@ app.post('/admin/company-login', function(req, res) {
   );
 });
 
-// ROUTE 24 — POST /admin/company-jobs (company admin posts a job for their company only)
+// ROUTE 24 — POST /admin/company-jobs
 app.post('/admin/company-jobs', function(req, res) {
   var b = req.body;
   if (!b.company_id) return res.status(400).json({ success: false, error: 'Missing company_id' });
 
-  // Get company name first
   db.query('SELECT name FROM companies WHERE id = ?', [b.company_id], function(err, companies) {
     if (err) return res.status(500).json({ success: false, error: err.message });
     if (companies.length === 0) return res.status(404).json({ success: false, error: 'Company not found' });
 
-    var sql = 'INSERT INTO jobs (title, company, company_id, type, tag, location, ctc, min_cgpa, required_skills, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    var sql = 'INSERT INTO jobs (title, company, company_id, type, tag, location, ctc, min_cgpa, required_skills, description, deadline) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     db.query(sql,
-      [b.title, companies[0].name, b.company_id, b.type, b.tag, b.location, b.ctc, b.min_cgpa, b.required_skills, b.description],
+      [b.title, companies[0].name, b.company_id, b.type, b.tag, b.location, b.ctc, b.min_cgpa, b.required_skills, b.description, b.deadline || null],
       function(err, result) {
         if (err) return res.status(500).json({ success: false, error: err.message });
         res.json({ success: true, jobId: result.insertId });
@@ -547,6 +546,41 @@ app.get('/admin/company-applicants/:jobId/:companyId', function(req, res) {
       });
     }
   );
+});
+
+// ROUTE 27 — PUT /admin/company-profile
+app.put('/admin/company-profile', function(req, res) {
+  var b = req.body;
+  if (!b.company_id) return res.status(400).json({ success: false, error: 'Missing company_id' });
+
+  var sql = `UPDATE companies SET 
+    description   = ?,
+    tagline       = ?,
+    headquarters  = ?,
+    founded_year  = ?,
+    employee_count = ?,
+    website       = ?,
+    linkedin_url  = ?,
+    logo_emoji    = ?
+    WHERE id = ?`;
+
+  db.query(sql, [
+    b.description, b.tagline, b.headquarters,
+    b.founded_year, b.employee_count, b.website,
+    b.linkedin_url, b.logo_emoji, b.company_id
+  ], function(err) {
+    if (err) return res.status(500).json({ success: false, error: err.message });
+    res.json({ success: true });
+  });
+});
+
+// ROUTE 28 — GET /admin/company-profile/:companyId
+app.get('/admin/company-profile/:companyId', function(req, res) {
+  db.query('SELECT * FROM companies WHERE id = ?', [req.params.companyId], function(err, results) {
+    if (err) return res.status(500).json({ success: false, error: err.message });
+    if (results.length === 0) return res.status(404).json({ success: false, error: 'Not found' });
+    res.json({ success: true, company: results[0] });
+  });
 });
 
 app.listen(3000, function() {

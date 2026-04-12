@@ -343,8 +343,72 @@
   <div class="jobs-grid" id="recommendations-grid"></div>
 </div>
 
+  <!-- All jobs shown when not logged in -->
+  <div id="all-jobs-section">
+    <div class="jobs-grid" id="jobs-grid"></div>
+  </div>
+
+</div>
 </div>
 
+</div>
+
+<!-- Job Detail Modal -->
+<div class="job-modal-overlay" id="job-modal">
+  <div class="job-modal">
+    <button class="job-modal-close" onclick="closeJobModal()">×</button>
+    <h2 id="jm-title"></h2>
+    <p class="modal-company" id="jm-company"></p>
+    <div class="job-modal-meta" id="jm-meta"></div>
+    <div class="job-modal-section">
+      <h4>About the Role</h4>
+      <p id="jm-desc"></p>
+    </div>
+    <div class="job-modal-section">
+      <h4>Required Skills</h4>
+      <div id="jm-skills" class="chips-wrap"></div>
+    </div>
+    <div class="job-modal-section">
+      <h4>Eligibility</h4>
+      <p id="jm-eligibility" style="color:#888888; font-size:14px;"></p>
+    </div>
+    <div class="job-modal-footer">
+      <span class="job-modal-ctc" id="jm-ctc"></span>
+      <button class="apply-btn" id="jm-apply-btn" onclick="applyFromModal()">Apply Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Company Profile Modal -->
+<div class="company-modal-overlay" id="company-modal">
+  <div class="company-modal">
+    <button class="company-modal-close" onclick="closeCompanyModal()">×</button>
+
+    <div class="company-modal-header">
+    <div class="company-logo-big" id="cm-logo">🏢</div>
+    <div class="company-modal-info">
+      <h2 id="cm-name">Company Name</h2>
+      <p id="cm-tagline" style="color:#f5a190; font-size:13px; margin-bottom:4px;"></p>
+      <p id="cm-industry">Industry</p>
+      <div id="cm-meta" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;"></div>
+      <div style="margin-top:8px; display:flex; gap:12px;">
+        <a id="cm-website" href="#" target="_blank" style="color:#e8503a; font-size:13px;"></a>
+        <a id="cm-linkedin" href="#" target="_blank" style="color:#e8503a; font-size:13px; display:none;">LinkedIn →</a>
+      </div>
+    </div>
+  </div>
+
+    <div class="company-modal-section">
+      <h4>About</h4>
+      <p id="cm-desc">No description available.</p>
+    </div>
+
+    <div class="company-modal-section">
+      <h4>Open Positions</h4>
+      <div id="cm-jobs"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Popup message (shown briefly when you apply) -->
 <div id="popup"></div>
@@ -393,13 +457,17 @@
     fetch('http://localhost:3000/jobs')
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        jobs = data;   // store the jobs from DB into our variable
-        renderJobs();  // now draw the cards
+        jobs = data;
+        // Only render jobs immediately if user is NOT logged in
+        // If logged in, wait for recommendations to come back first
+        if (!loggedInUser) {
+          renderJobs();
+        }
       })
       .catch(function(err) {
         console.log('Could not load jobs:', err);
-        document.getElementById('jobs-grid').innerHTML =
-          '<p style="color:#888888; padding:32px 0;">Could not load jobs. Is the server running?</p>';
+        var grid = document.getElementById('jobs-grid');
+        if (grid) grid.innerHTML = '<p style="color:#888888; padding:32px 0;">Could not load jobs. Is the server running?</p>';
       });
   }
 
@@ -560,6 +628,11 @@
     document.getElementById('login-pass').value  = '';
   }
 
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
 
   // ─────────────────────────────────────────────
   // RENDER JOBS — builds cards from the jobs array
@@ -567,7 +640,7 @@
 
   function renderJobs() {
       if (loggedInUser && recommendationsData.length > 0) {
-      document.getElementById('recommendations-grid').innerHTML = '';
+      document.getElementById('all-jobs-section').style.display = 'none';
       return;
     }
     var searchText = document.getElementById('search-input').value.toLowerCase();
@@ -583,6 +656,7 @@
   });
 
     var grid = document.getElementById('jobs-grid');
+    if (!grid) return;
 
     if (filtered.length === 0) {
       grid.innerHTML = '<p style="color:#888888; padding:32px 0;">No jobs match your filters.</p>';
@@ -601,14 +675,20 @@
             <div class="company-logo" style="background-color:#2a2a2a">🏢</div>
             <div>
               <h3>${job.title}</h3>
-              <div class="company-name">${job.company} · ${job.location}</div>
+              <div class="company-name">
+                <span onclick="event.stopPropagation(); openCompanyModal('${job.company}')"
+                  style="cursor:pointer; text-decoration:underline; text-decoration-style:dotted;">
+                  ${job.company}
+                </span> · ${job.location}
+              </div>
             </div>
           </div>
           <div class="job-meta">
             <span class="meta-pill pill-purple">${job.type}</span>
             <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
             <span class="meta-pill">${job.tag}</span>
-          </div>
+            ${job.deadline ? '<span class="meta-pill" style="color:#f5a190; border-color:rgba(232,80,58,0.25); background:rgba(232,80,58,0.1);">📅 Enroll By: ' + formatDate(job.deadline) + '</span>' : ''}
+            </div>
           <p class="job-desc">${job.description}</p>
           <div class="job-card-bottom">
             <span class="ctc">${job.ctc}</span>
@@ -656,28 +736,24 @@
       });
   }
 
-
-  // ─────────────────────────────────────────────
-  // FILTER & TAG
-  // ─────────────────────────────────────────────
-
   // ─────────────────────────────────────────────
   // LOAD RECOMMENDATIONS — GET /recommendations/:studentId
   // ─────────────────────────────────────────────
 var recommendationsData = []; // store recommendations globally
 
 function loadRecommendations() {
-    if (!loggedInUser) return;
+  if (!loggedInUser) return;
 
-    fetch('http://localhost:3000/recommendations/' + loggedInUser.id)
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!data.success) return;
-        recommendationsData = data.recommendations;
-        renderRecommendations();
-      })
-      .catch(function(err) { console.log('Could not load recommendations:', err); });
-  }
+  fetch('http://localhost:3000/recommendations/' + loggedInUser.id)
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) return;
+      recommendationsData = data.recommendations;
+      renderRecommendations();
+      renderJobs(); // 👈 now renderJobs runs AFTER recommendations are loaded
+    })
+    .catch(function(err) { console.log('Could not load recommendations:', err); });
+}
 
   function renderRecommendations() {
     if (!loggedInUser || recommendationsData.length === 0) return;
@@ -707,7 +783,12 @@ function loadRecommendations() {
             <div class="company-logo" style="background-color:#2a2a2a">🏢</div>
             <div>
               <h3>${job.title}</h3>
-              <div class="company-name">${job.company} · ${job.location}</div>
+              <div class="company-name">
+                <span onclick="event.stopPropagation(); openCompanyModal('${job.company}')"
+                  style="cursor:pointer; text-decoration:underline; text-decoration-style:dotted;">
+                  ${job.company}
+                </span> · ${job.location}
+              </div>
             </div>
           </div>
           <div class="job-meta">
@@ -715,6 +796,7 @@ function loadRecommendations() {
             <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
             <span class="meta-pill">${job.tag}</span>
             <span class="meta-pill" style="background-color:rgba(232,80,58,0.15); color:#e8503a; border-color:rgba(232,80,58,0.3);">⚡ ${job.match_score}% match</span>
+            ${job.deadline ? '<span class="meta-pill" style="color:#f5a190; border-color:rgba(232,80,58,0.25); background:rgba(232,80,58,0.1);">📅 Enroll By: ' + formatDate(job.deadline) + '</span>' : ''}
           </div>
           <p class="job-desc">${job.description.substring(0, 80)}${job.description.length > 80 ? '...' : ''}</p>
           <div class="job-card-bottom">
@@ -1106,7 +1188,162 @@ function saveProfile() {
     });
   }
 
-  loadJobs();
+// ─────────────────────────────────────────────
+// JOB DETAIL MODAL
+// ─────────────────────────────────────────────
+
+var activeModalJobId = null;
+
+function openJobModal(jobId) {
+  var job = jobs.find(function(j) { return j.id === jobId; })
+         || recommendationsData.find(function(j) { return j.id === jobId; });
+  if (!job) return;
+
+  activeModalJobId = job.id;
+  document.getElementById('jm-title').textContent   = job.title;
+  document.getElementById('jm-company').innerHTML   =
+    `<span onclick="closeJobModal(); openCompanyModal('${job.company}')"
+      style="cursor:pointer; text-decoration:underline; text-decoration-style:dotted; color:#888888;">
+      ${job.company}
+    </span> · ${job.location}`;
+  document.getElementById('jm-desc').textContent    = job.description;
+  document.getElementById('jm-ctc').textContent     = job.ctc;
+
+  document.getElementById('jm-meta').innerHTML = `
+    <span class="meta-pill pill-purple">${job.type}</span>
+    <span class="meta-pill">${job.tag}</span>
+    <span class="meta-pill">Min CGPA: ${job.min_cgpa}</span>
+    ${job.posted_at ? '<span class="meta-pill">📌 Posted: ' + formatDate(job.posted_at) + '</span>' : ''}
+    ${job.deadline  ? '<span class="meta-pill" style="color:#f5a190; border-color:rgba(232,80,58,0.25); background:rgba(232,80,58,0.1);">📅 Deadline: ' + formatDate(job.deadline) + '</span>' : ''}
+  `;
+
+  var skillsEl = document.getElementById('jm-skills');
+  if (job.required_skills) {
+    skillsEl.innerHTML = job.required_skills.split(',').map(function(s) {
+      return '<span class="skill-chip">' + s.trim() + '</span>';
+    }).join('');
+  } else {
+    skillsEl.innerHTML = '<span style="color:#888888; font-size:13px;">No specific skills listed.</span>';
+  }
+
+  document.getElementById('jm-eligibility').textContent =
+    'Minimum CGPA of ' + job.min_cgpa + ' required. ' +
+    (job.required_dept ? 'Open to ' + job.required_dept + ' only.' : 'Open to all departments.');
+
+  var applyBtn = document.getElementById('jm-apply-btn');
+  if (!loggedInUser) {
+    applyBtn.textContent = 'Login to Apply';
+    applyBtn.className   = 'apply-btn';
+  } else if (appliedIds.includes(job.id)) {
+    applyBtn.textContent = '✓ Applied';
+    applyBtn.className   = 'apply-btn applied';
+  } else {
+    applyBtn.textContent = 'Apply Now';
+    applyBtn.className   = 'apply-btn';
+  }
+
+  document.getElementById('job-modal').classList.add('active');
+}
+
+function closeJobModal() {
+  document.getElementById('job-modal').classList.remove('active');
+  activeModalJobId = null;
+}
+
+function applyFromModal() {
+  if (!loggedInUser) { closeJobModal(); showPage('profile'); return; }
+  if (!activeModalJobId || appliedIds.includes(activeModalJobId)) return;
+  applyJob(activeModalJobId, document.getElementById('jm-apply-btn'));
+}
+
+
+  // ─────────────────────────────────────────────
+// COMPANY PROFILE MODAL
+// ─────────────────────────────────────────────
+
+function openCompanyModal(companyName) {
+  // Find company id from jobs list
+  var job = jobs.find(function(j) { return j.company === companyName; })
+         || recommendationsData.find(function(j) { return j.company === companyName; });
+
+  if (!job || !job.company_id) {
+    showPopup('Company profile not available.');
+    return;
+  }
+
+  fetch('http://localhost:3000/companies/' + job.company_id)
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) return;
+
+      var c = data.company;
+      var companyJobs = data.jobs;
+      document.getElementById('cm-logo').textContent     = c.logo_emoji || '🏢';
+      document.getElementById('cm-name').textContent     = c.name;
+      document.getElementById('cm-industry').textContent = c.industry || 'Industry not listed';
+      document.getElementById('cm-desc').textContent     = c.description || 'No description available.';
+      document.getElementById('cm-tagline').textContent  = c.tagline || '';
+
+      document.getElementById('cm-meta').innerHTML = [
+        c.headquarters   ? '📍 ' + c.headquarters : '',
+        c.founded_year   ? '📅 Founded ' + c.founded_year : '',
+        c.employee_count ? '👥 ' + c.employee_count : ''
+      ].filter(Boolean).map(function(item) {
+        return '<span class="meta-pill">' + item + '</span>';
+      }).join('');
+
+      var websiteEl = document.getElementById('cm-website');
+      if (c.website) {
+        websiteEl.textContent    = c.website;
+        websiteEl.href           = c.website;
+        websiteEl.style.display  = 'inline';
+      } else {
+        websiteEl.style.display = 'none';
+      }
+
+      var linkedinEl = document.getElementById('cm-linkedin');
+      if (c.linkedin_url) {
+        linkedinEl.href          = c.linkedin_url;
+        linkedinEl.style.display = 'inline-block';
+      } else {
+        linkedinEl.style.display = 'none';
+      }
+      // Render jobs
+      var jobsEl = document.getElementById('cm-jobs');
+      if (companyJobs.length === 0) {
+        jobsEl.innerHTML = '<p style="color:#888888; font-size:14px;">No open positions right now.</p>';
+      } else {
+        jobsEl.innerHTML = companyJobs.map(function(job) {
+          var isApplied = appliedIds.includes(job.id);
+          return `
+            <div class="company-job-card">
+              <div class="company-job-info">
+                <h3>${job.title}</h3>
+                <p>${job.type} · ${job.location} · ${job.ctc}</p>
+                <p style="margin-top:4px;">Min CGPA: ${job.min_cgpa}</p>
+              </div>
+              <div class="company-job-actions">
+                <button class="apply-btn ${isApplied ? 'applied' : ''}"
+                  onclick="applyJob(${job.id}, this)">
+                  ${isApplied ? '✓ Applied' : 'Apply Now'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('company-modal').classList.add('active');
+      })
+      .catch(function(err) {
+        console.log('Could not load company:', err);
+        showPopup('Could not load company profile.');
+      });
+  }
+
+  function closeCompanyModal() {
+    document.getElementById('company-modal').classList.remove('active');
+  }
   
 </script>
 </body>
