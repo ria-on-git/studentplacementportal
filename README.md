@@ -116,8 +116,7 @@ Open [index.html] (http://localhost:3000) in your browser for the student portal
 - One-time user authentication via college email ID during registration
 - Profile picture upload for student accounts
 - Certification upload (students can attach proof of certifications to their profile)
-- Job listing detail popup — expanded view with full description, requirements, and company info
-- Company profile page — view company details on clicking a company name within a listing
+- Job listing detailed popup — expanded view with full description, requirements, and company info
 - More sensitive eligibility/criteria matching
   
 
