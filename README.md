@@ -126,3 +126,5 @@ Open [index.html] (http://localhost:3000) in your browser for the student portal
 - Email notifications to students when their application is approved or declined
   
 ---
+
+View the Student Dashboard UI here: https://ria-on-git.github.io/studentplacementportal/
