@@ -4,6 +4,8 @@ const db      = require('./db');
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.')); 
@@ -583,7 +585,6 @@ app.get('/admin/company-profile/:companyId', function(req, res) {
   });
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`PlaceIt server running at http://localhost:${PORT}`);
 });
