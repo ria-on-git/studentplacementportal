@@ -1,12 +1,14 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 
+console.log('MYSQL_URL exists:', !!process.env.MYSQL_URL);
+console.log('MYSQL_URL value:', process.env.MYSQL_URL ? process.env.MYSQL_URL.substring(0, 30) + '...' : 'NOT FOUND');
+
 const connectionUrl = process.env.MYSQL_URL;
 
 if (!connectionUrl) {
-  console.error('ERROR: MYSQL_URL environment variable is not set!');
-  console.error('Available env vars:', Object.keys(process.env));
-  process.exit(1); 
+  console.error('ERROR: MYSQL_URL is missing!');
+  process.exit(1);
 }
 
 const db = mysql.createConnection(connectionUrl);
